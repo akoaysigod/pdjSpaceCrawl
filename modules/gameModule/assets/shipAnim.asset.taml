@@ -1,0 +1,7 @@
+<AnimationAsset
+	AssetName="ShipAnim"
+	Image="@asset=gameModule:ShipSheet"
+	AnimationFrames="0 1 2 3"
+	AnimationTime="1"
+	AnimationCycle="true"
+/>

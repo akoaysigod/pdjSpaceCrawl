@@ -1,0 +1,8 @@
+0 = player
+1 = mothership
+2 = player shots
+
+10 = blocks
+
+12 = enemyship
+13 = enemy bullet 

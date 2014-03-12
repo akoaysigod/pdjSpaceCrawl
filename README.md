@@ -16,7 +16,7 @@ D - turn right<br>
 space - shoot <br>
 
 <b>Random:</b><br>
-I decided on Torque2D for this because there was only a week. It's easy to code something simple that would be a billion times more complicated in the other engine I usually work in. Anyway, I tried to make everything as obvious as possible in the scripts/C++ code. You should be able to modify things fairly easily. 
+I decided on Torque2D for this because there was only a week. It's easy to code something simple that would be a billion times more complicated in the other engine I usually work in. Anyway, I tried to make everything as obvious as possible in the scripts/C++ code. You should be able to modify things fairly easily. I haven't coded in this engine in well over a year so some of the things I'm doing probably aren't the way that they should be done. Probably even a year ago this was also true. 
 
 The level generation is using automata under a certain rule set. If you google it you'll find very nice looking caves generated using a very similar, if not identical algorithm. I have no idea what I did differently from those people but even on the same scale this looks mostly like someone who played a very bad game of Tetris. 
 

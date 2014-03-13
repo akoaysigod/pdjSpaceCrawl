@@ -8,7 +8,7 @@ function createItem() {
 	%item.createPolygonBoxCollisionShape();
 	%item.setCollisionLayers( 1, 2, 10 );
 	%item.setCollisionGroups( 1, 2, 10 );
-	%item.setSceneGroup( 1 );	
+	%item.setSceneGroup( 25 );	
 	%item.setUpdateCallback( true );
 	%item.setFixedAngle( true );
 	

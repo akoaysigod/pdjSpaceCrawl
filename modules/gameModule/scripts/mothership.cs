@@ -1,4 +1,6 @@
 function createMothership() {
+	exec( "./MessageWindow.cs" );
+
 	%mothership = new Sprite( Mothership );
 	%mothership.name = "mothership";
 	%mothership.Image = "gameModule:mothership";
@@ -12,8 +14,9 @@ function createMothership() {
 	
 	%mothership.setDefaultRestitution( 0.5 );
 	%mothership.setSceneGroup( 1 );
-	%mothership.setCollisionGroups( 1 );
-	%mothership.setCollisionLayers( 1 );
+	%mothership.setCollisionGroups( 1, 13 );
+	%mothership.setCollisionLayers( 1, 13 );
+	%mothership.setCollisionCallback( true );
 	%mothership.Size = "30 25";
 	
 	return %mothership;
@@ -27,6 +30,8 @@ function Mothership::createDropBox( %this ) {
 	%dropBox.createPolygonBoxCollisionShape();
 	%dropbox.setPositionX( getWord( %this.getPosition(), 0 ) );
 	%dropbox.setPositionY( getWord( %this.getPosition(), 1 ) - 5 );
+	%dropbox.setCollisionGroups( 13, 25 );
+	%dropbox.setCollisionLayers( 13, 25 );
 	%dropBox.setSceneGroup( 2 );
 	%dropBox.setCollisionCallback( true );
 	
@@ -34,8 +39,20 @@ function Mothership::createDropBox( %this ) {
 }
 
 function DropBox::onCollision( %this, %collides, %details ) {
+	if ( %collides.name $= "enemyBullet" ) {
+		%collides.safeDelete();
+	}
+
 	if ( %collides.name $= "fuelItem" ) {
 		%collides.safeDelete();
 		FuelBar.updateFuel();
+
+		messageWindowCreate( "testing because I don't remember press ENTER to continue asdasdasdasd " );
+	}
+}
+
+function Mothership::onCollision( %this, %collides, %details ) {
+	if ( %collides.name $= "enemyBullet" ) {
+		%collides.safeDelete();
 	}
 }

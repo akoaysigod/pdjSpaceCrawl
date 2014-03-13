@@ -6,3 +6,14 @@
 
 12 = enemyship
 13 = enemy bullet 
+
+
+//spawn
+/*
+ 3 = item location;
+ 5 = station down
+ 6 = station up
+ 
+ 30 = spawn point
+ 31 = fill ^
+*/

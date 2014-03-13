@@ -15,30 +15,72 @@ function createEnemyShip() {
 	
 	%enemy.setUpdateCallback( true );
 	%enemy.following = false;
+	%enemy.mother = false;
+	%enemy.isPatrolling = false;
 
 	%enemy.health = 2;
 
 	return %enemy;
 }
 
-function Enemy::onUpdate( %this ) {
-	%dist = VectorDist( %this.getPosition(), Ship.getPosition() );
+function Enemy::reactivateTimer( %this ) {
+	%this.startTimer( fireShot, 750, 0 );
+}
 
-	if ( %dist < 30 && !%this.following ) { 
-		%this.following = true;
-	} 
+function Enemy::hoverMode( %this ) {
+	%x = getWord( %this.getPosition(), 0 );
+	%y = getWord( %this.getPosition(), 1 );
 
-	if ( %this.following && %dist > 20 ) {
-		%this.moveTo( Ship.getPosition(), 10 );
+	%xM = getWord( Mothership.getPosition(), 0 );
+	%yM = getWord( Mothership.getPosition(), 1 );
+
+	%coin = getRandom( 0, 1 );
+	%yMove = getRandom( 1, 3 );
+	if ( %coin ) {
+		%yMove *= -1;
+	}
+	%y += %yMove;
+
+	if ( %y < %yM + 15 ) {
+		%y = %yM + 20;
+	}
+
+	if ( %x < %xM ) {
+		%x = %xM + 20;
+		%this.moveTo( %x SPC  %y, 10 );
+	} else { 
+		%x = %xM - 20;
+		%this.moveTo( %x SPC %y, 10 );
+	}
+}
+
+function Enemy::patrol( %this ) {
+	%this.isPatrolling = true; 
+
+	%x = 10;
+	%coin = getRandom( 0, 1 );
+	if ( %coin == 1 ) {
+		%x *= -1;
+	}
+	%this.setLinearVelocityX( %x );
+}
+
+function Enemy::attackMother( %this ) {
+	%x = getWord( Mothership.getPosition(), 0 );
+	%y = getWord( Mothership.getPosition(), 1 );
+
+	%spawnX = getWord( %this.getPosition(), 0 );
+	if ( %spawnX < %x ) {
+		%x -= getRandom( 50, 75 );
 	} else {
-		%this.cancelMoveTo();
+		%x += getRandom( 50, 75 );
 	}
 
-	if ( %this.following && !%this.isTimerActive() ) {
-		%this.startTimer( fireShot, 750, 0 );
-	} else if ( %enemy.following && %dist > 20 && %dist < 30 ) {
-		%this.stopTimer();
-	}
+	%pos = %x SPC %y + getRandom( 25, 50 );
+
+	%this.moveTo( %pos, 10 );
+
+	%this.mother = true;
 }
 
 function Enemy::fireShot( %this ) {
@@ -50,12 +92,19 @@ function Enemy::fireShot( %this ) {
 	%bullet.setCollisionGroups( 30 );
 	%bullet.setCollisionLayers( 30 );
 	%bullet.setSceneGroup( 13 );
+	%bullet.setLifeTime( 10 );
+	%bullet.sceneLayer = 10;
 	//%bullet.setDefaultRestitution( 0.5 );
 	%bullet.Position = %this.getPosition();
 
 	%bullet.damage = 3;
 
-	%shootDir = Vector2AngleToPoint( Ship.getPosition(), %this.getPosition() );
+	if ( %this.following ) {
+		%shootDir = Vector2AngleToPoint( Ship.getPosition(), %this.getPosition() );
+	} else {
+		%shootDir = Vector2AngleToPoint( Mothership.getPosition(), %this.getPosition() );
+	}
+
 	if ( %shootDir < 0 ) {
 			%shootDir *= -1;
 	} else if ( %shootDir > 0 ) {
@@ -75,4 +124,45 @@ function Enemy::takeDamage( %this, %damage ) {
 	if ( %this.health <= 0 ) {
 		%this.safeDelete();
 	}
+}
+
+function Enemy::updateMother( %this ) {
+	%distMother = VectorDist( %this.getPosition(), Mothership.getPosition() );
+
+	if ( %this.mother && %this.isMoveToComplete() && !%this.isPatrolling ) {
+		%this.patrol();
+	}
+
+	if ( %distMother < 50 && !%this.isTimerActive() ) {
+		%this.startTimer( fireShot, 750, 0 );
+		%this.setLinearVelocity( 0, 0 );
+		%this.hoverMode();
+		return;
+	}
+
+	if ( %this.isMoveToComplete() ) {
+		%this.hoverMode();
+	}
+}
+
+function Enemy::onUpdate( %this ) {
+	%dist = VectorDist( %this.getPosition(), Ship.getPosition() );
+
+	if ( %dist < 30 && !%this.following ) { 
+		%this.following = true;
+	} 
+
+	if ( %this.mother ) {
+		%this.updateMother();
+	}
+
+	if ( %this.following && %dist > 20 ) {
+		%this.moveTo( Ship.getPosition(), 10 );
+	}
+
+	if ( %this.following && !%this.isTimerActive() ) {
+		%this.startTimer( fireShot, 750, 0 );
+	} else if ( %this.following && %dist > 20 && %dist < 30 ) {
+		%this.stopTimer();
+	} 
 }

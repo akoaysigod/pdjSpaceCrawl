@@ -9,6 +9,7 @@ if ( !isObject( ShipControls ) ) {
 	%template.addBehaviorField( leftKey, "rotate left", keybind, "keyboard A" );
 	%template.addBehaviorField( rightKey, "rotate right", keybind, "keyboard D" );
 	%template.addBehaviorField( spaceKey, "shoot", keybind, "keyboard space" );
+	%template.addBehaviorField( escapeKey, "pause game", keybind, "keyboard escape" );
 }
 
 function ShipControls::onBehaviorAdd( %this ) {  
@@ -20,11 +21,11 @@ function ShipControls::onBehaviorAdd( %this ) {
 	GlobalActionMap.bindObj( getWord( %this.leftKey, 0 ), getWord( %this.leftKey, 1 ), "turnLeft", %this );
  	GlobalActionMap.bindObj( getWord( %this.rightKey, 0 ), getWord( %this.rightKey, 1 ), "turnRight", %this );
  	GlobalActionMap.bindObj( getWord( %this.spaceKey, 0 ), getWord( %this.spaceKey, 1 ), "shoot", %this );
+ 	GlobalActionMap.bindObj( getWord( %this.escapeKey, 0 ), getWord( %this.escapeKey, 1) , "pauseGame", %this );
  	
  	%this.maxSpeed = 35;
  	%this.isAccel = false;
 }
-
 
 function ShipControls::onBehaviorRemove( %this ) {
 	if ( !isObject( GlobalActionMap ) )
@@ -35,9 +36,28 @@ function ShipControls::onBehaviorRemove( %this ) {
 	GlobalActionMap.unbindObj( getWord( %this.leftKey, 0 ), getWord( %this.leftKey, 1 ), %this );
 	GlobalActionMap.unbindObj( getWord( %this.rightKey, 0 ), getWord( %this.rightKey, 1 ), %this );
 	GlobalActionMap.unbindObj( getWord( %this.spaceKey, 0 ), getWord( %this.spaceKey, 1 ), %this );
+	GlobalActionMap.unbindObj( getWord( %this.escapeKey, 0 ), getWord( %this.escapeKey, 1), %this );
+}
+
+function ShipControls::pauseGame( %this, %val ) {
+	if ( !isObject( MessageWindow ) ) {
+		if ( %val == 0 ) {
+			if ( $pauseStatus ) {
+				unpause();
+				$pauseStatus = false;
+			} else { 
+				pause();
+				$pauseStatus = true;
+			}
+		}
+	}
 }
 
 function ShipControls::accelerate( %this, %val ) { 
+	if ( $pauseStatus ) {
+		return;
+	}
+
 	if ( !%val ) {
 		%this.isAccel = false;
 		%this.stopThrust();
@@ -89,6 +109,10 @@ function ShipControls::accelerate( %this, %val ) {
 }
 
 function ShipControls::turnLeft( %this, %val ) { 
+	if ( $pauseStatus ) {
+		return;
+	}
+	
 	if ( !%val ) {
 		%this.stopTurn();
 		return;
@@ -98,6 +122,10 @@ function ShipControls::turnLeft( %this, %val ) {
 }
 
 function ShipControls::turnRight( %this, %val ) {
+	if ( $pauseStatus ) {
+		return;
+	}
+	
 	if ( !%val ) {
 		%this.stopTurn();
 		return;
@@ -168,6 +196,10 @@ function ShipControls::bulletTimer( %this ) {
 }
 		
 function ShipControls::shoot( %this, %val ) {
+	if ( $pauseStatus ) {
+		return;
+	}
+	
 	if ( !%val ) {
 		%this.stopTimer();
 		return;

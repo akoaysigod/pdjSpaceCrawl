@@ -1,8 +1,22 @@
+//
+//  LevelGen.cpp
+//  Torque2D
+//
+//  Created by Anthony Green on 3/10/14.
+//  Copyright (c) 2014 Michael Perry. All rights reserved.
+//
+
 #include "LevelGen.h"
 IMPLEMENT_CONOBJECT( LevelGen );
 
 int LevelGen::getVal( int x, int y ) {
     return map[y][x];
+}
+
+void LevelGen::finish() {
+    clean();
+    //fill();
+    placeStuff();
 }
 
 void LevelGen::initLevel( int x, int y ) {
@@ -11,8 +25,13 @@ void LevelGen::initLevel( int x, int y ) {
     
     map.resize( sizeY, std::vector<int>( sizeX, 0 ) );
 
+    int fillLevel = rand() % 3 + 3;
     for ( int y = 0; y != sizeY; y++ ) {
         for (int x = 0; x != sizeX; x++ ) {
+            if ( x <= fillLevel || y <= fillLevel || x >= sizeX - fillLevel ) {
+                map[y][x] = 1;
+                continue;
+            }
             if ( rand() % 100 < 45 ) {
                 map[y][x] = 1;
             } else {
@@ -60,26 +79,28 @@ void LevelGen::automata( int bRate, int sRate, int it ) {
         }
         map = mapCopy;
     }
-    clean();
 }
 
 void LevelGen::clean() {
     for ( int y = 1; y != sizeY - 1; y++ ) {
         for ( int x = 1; x != sizeX - 1; x++ ) {
             int living = checkAlive( x, y );
-            if ( map[y][x] == 1 && living <= 1 ) {
+            if ( map[y][x] == 1 && living <= 2 ) {
                 map[y][x] = 0;
+            }
+            
+            if ( map[y][x] == 0 && living > 6 ) {
+                map[y][x] = 1;
             }
         }
     }
 }
 
 /*
+ 3 = item location;
  5 = station down
  6 = station up
  
- 10 = mobile enemy
- 11 = fill ^
  30 = spawn point
  31 = fill ^
 */
@@ -118,9 +139,18 @@ void LevelGen::placeStuff() {
                     map[y][x] = 30;
                 }
             }
+        }
+    }
+    
+    for ( int y = 1; y != sizeY - 1; y++ ) {
+        for ( int x = 1; x != sizeX - 1; x++ ) {
+            if ( map[y][x] == 1 ) {
+                continue;
+            }
             
-            if ( rand() % 100 > 85 ) {
-                map[y][x] = 10;
+            int alive = checkAlive( x, y );
+            if ( alive == 0 ) {
+                map[y][x] = 3;
             }
         }
     }

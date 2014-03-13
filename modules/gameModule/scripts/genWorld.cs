@@ -4,6 +4,7 @@ function createWorld() {
 	exec( "./enemyShip.cs" );
 	exec( "./stationGun.cs" );
 	exec( "./item.cs" );
+	exec( "./enemySpawnPoint.cs" );
 
 	$height = 100;
 	$width = 200;
@@ -32,10 +33,44 @@ function GenLevel::genSprites( %this ) {
 	%moveX = %blockSize;
 	%moveY = %blockSize;
 	%simulate = 1;
-	
+
+	%placeOne = false;
+	%placeTwo = false;
+	%placeThree = false;
+	%placeFour = false;
+	%placeCount = 95;
+
 	for ( %y = 0; %y != $height; %y++ ) {
 		for ( %x = 0; %x != $width; %x++ ) {
 			%cell = %this.getVal( %x, %y );
+
+			if ( %cell == 3 ) {
+				%item = createItem();
+				%chance = getRandom( 0, 99 );
+				if ( !%placeOne && %chance > %placeCount ) {
+					%item.position = %xPos SPC %yPos;
+					%placeCount = 95;
+					%placeOne = true;
+				} else if ( !%placeTwo && %chance > %placeCount ) {
+					if ( %x > $width / 2 && %y < $height / 2 ) {
+						%item.position = %xPos SPC %yPos;
+						%placeCount = 95;
+						%placeTwo = true;
+					}
+				} else if ( !%placeThree && %chance > %placeCount ) {
+					if ( %x < $width / 2 && %y > $height / 2 ) {
+						%item.position = %xPos SPC %yPos;
+						%placeCount = 95;
+						%placeThree = true;
+					}
+				} else if ( !%placeFour && %chance > %placeCount ) {
+					if ( %x > $width / 2 && %y > $height / 2 ) {
+						%item.position = %xPos SPC %yPos;
+						%placeFour = true;
+					}
+				}
+			}
+			%placeCount -= 1;
 
 			if ( %cell == 1 || %cell == 11 || %cell == 31 ) {
 				%block = new Sprite();
@@ -60,6 +95,10 @@ function GenLevel::genSprites( %this ) {
 				%gun = createStationGun( %cell );
 				%gun.Position = %xPos SPC %yPos;
 				GameScene.add( %gun );
+			}
+
+			if ( %cell == 30 || %cell == 31 ) {
+				createEnemySpawnPoint( %xPos, %yPos );
 			}
 			%xPos += %moveX;	
 		}
@@ -100,16 +139,15 @@ function placeMothership() {
 	%start = getRandom( 0, $width );
 	
 	%mothership = createMothership();
-	%mothership.Position = %start SPC ( $height * $scaleFactor );
-	GameScene.add( %mothership );
+	%mothership.position = %start SPC ( Mothership.getHeight() / 2 + ( $height * $scaleFactor ) - 1.1 );	GameScene.add( %mothership );
 	
 	%mothership.createDropBox();
 	
 	%playership = createSpaceShip();
 	%controls = ShipControls.createInstance();
 	%playership.addBehavior( %controls );
-	%playership.Position = %start SPC ( $height * $scaleFactor ) + 15;
-
+	%playership.Position = %start SPC ( $height * $scaleFactor ) + 25;
+	
 	GameScene.add( %playership );
 	
 	Window.mount( %playership );

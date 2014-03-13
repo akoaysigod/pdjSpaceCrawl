@@ -25,5 +25,59 @@ function GameModule::create( %this ) {
 
 function GameModule::destroy( %this ) {
 	destroySceneWindow();
-	//controls.pop();
+}
+
+function pause() {
+	%k = GameScene.getCount();
+	for ( %i = 0; %i != %k; %i++ ) {
+		%tmp = GameScene.getObject( %i );
+
+		if ( %tmp.name $= "block" ) {
+			continue;
+		}
+
+		%tmp.pauseVel = %tmp.getLinearVelocity();
+		%tmp.setLinearVelocity( "0 0" );
+		%tmp.pauseAng = %tmp.getAngularVelocity();
+		%tmp.setAngularVelocity( 0 );
+		if ( %tmp.isTimerActive() ) {
+			%tmp.hasTimer = true;
+			%tmp.stopTimer();
+		} else { 
+			%tmp.hasTimer = false;
+		}
+
+		if ( %tmp.getUpdateCallback() ) {
+			%tmp.isUpdating = true;
+			%tmp.setUpdateCallback( false );
+		} else {
+			%tmp.isUpdating = false;
+		}
+	}
+
+	$pauseStatus = true;
+}
+
+function unpause() {
+	%k = GameScene.getCount();
+	for ( %i = 0; %i != %k; %i++ ) {
+		%tmp = GameScene.getObject( %i );
+
+		if ( %tmp.name $= "block" ) {
+			continue;
+		}
+
+		%tmp.setLinearVelocity( %tmp.pauseVel );
+		%tmp.setAngularVelocity( %tmp.pauseAng );
+		if ( %tmp.hasTimer ) {
+			%tmp.reactivateTimer();
+		} 
+
+		if ( %tmp.isUpdating ) {
+			%tmp.setUpdateCallback( true );
+		} 
+
+	}	
+	Ship.setAngularVelocity( 0 );
+	$pauseStatus = false;
 }

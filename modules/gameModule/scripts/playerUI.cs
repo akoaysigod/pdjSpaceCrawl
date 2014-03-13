@@ -9,7 +9,7 @@ function createPlayerUI() {
 
 	%health = new Sprite( HealthBar ) {
 		image = "gameModule:healthBar";
-		size = "48 3.9";
+		size = "48 1.4";
 		position = "-0.2 -34";
 		SceneLayer = 0;
 	};
@@ -17,7 +17,7 @@ function createPlayerUI() {
 
 	%healthGraphic = new Sprite() {
 		image = "gameModule:healthGraphic";
-		size = "51 5";
+		size = "51 2.5";
 		position = "0 -34";
 		SceneLayer = 1;
 	};
@@ -25,7 +25,7 @@ function createPlayerUI() {
 
 	%fuel = new Sprite( FuelBar ) {
 		image = "gameModule:fuelBar";
-		size = "0 3";
+		size = "0 1.5";
 		position = "-45 29";
 		SceneLayer = 0;
 		angle = 90;
@@ -36,7 +36,7 @@ function createPlayerUI() {
 
 	%fuelBack = new Sprite() {
 		image = "gameModule:healthGraphic";
-		size = "12 4";
+		size = "12 2.5";
 		position = "-45 29";
 		SceneLayer = 1;
 		angle = 90;

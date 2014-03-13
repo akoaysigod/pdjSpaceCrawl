@@ -7,7 +7,7 @@ To run you'll need the [Torque2D](https://github.com/GarageGames/Torque2D). For 
 
 <b>Make sure to add LevelGen.cpp and LevelGen.h to the project.</b>
 
-After it's compiled replace the <i>modules/</i> where the binary is with the one here. 
+After it's compiled replace the <i>modules/</i> where the binary is with the one here. And replace main.cs with the one here. As of right now I don't think I changed anything but I might.
 
 <b>Controls:</b><br>
 W - move forward/engines<br>

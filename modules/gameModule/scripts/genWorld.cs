@@ -155,7 +155,8 @@ function placeMothership() {
 	
 	GameScene.add( %playership );
 	
-	Window.mount( %playership );
+	Window.mount( %playership, 0, 0, 10, true, false );
+	Window.setViewLimitOn( 0, 0, $width * $scaleFactor, ( $height * $scaleFactor ) + 75);
 	
 	%item = createItem();
 	%item.setPositionX( %start + 20 );

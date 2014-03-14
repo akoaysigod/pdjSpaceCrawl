@@ -89,8 +89,14 @@ function Enemy::attackMother( %this ) {
 	%this.mother = true;
 }
 
+function BulletCall::onCollision( %this, %collides, %details ) {
+	if ( %collides.name $= "border" ) {
+		%this.safeDelete();
+	}
+}
+
 function Enemy::fireShot( %this ) {
-	%bullet = new Sprite();
+	%bullet = new Sprite( BulletCall );
 	%bullet.Name = "enemyBullet";
 	%bullet.Image = "gameModule:enemyBullet";
 	%bullet.Size = "2 2";
@@ -98,10 +104,11 @@ function Enemy::fireShot( %this ) {
 	%bullet.setCollisionGroups( 30 );
 	%bullet.setCollisionLayers( 30 );
 	%bullet.setSceneGroup( 13 );
-	%bullet.setLifeTime( 10 );
+	//%bullet.setLifeTime( 10 );
 	%bullet.sceneLayer = 10;
 	//%bullet.setDefaultRestitution( 0.5 );
 	%bullet.Position = %this.getPosition();
+	%bullet.setCollisionCallback( true );
 
 	%bullet.damage = 3;
 

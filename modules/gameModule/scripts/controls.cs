@@ -157,7 +157,7 @@ function Bullet::onCollision( %this, %collides, %collisionDetails ) {
 	
 	if ( %collides.name $= "enemy" ) {
 		%collides.takeDamage( %this.damage );
-	}
+	} 
 
 	%this.safeDelete();
 }

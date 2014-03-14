@@ -9,8 +9,11 @@ function GameModule::create( %this ) {
 	createSceneWindow();
 	createScene();
 	Window.setScene( GameScene );
-	GameScene.setDebugOn( "collision", "position", "aabb" );
+	//GameScene.setDebugOn( "collision", "position", "aabb" );
 	
+	GameScene.playWidth = 200;
+	GameScene.playHeight = 100; 
+	GameScene.factor = 2;
 	createWorld();
 	
 	createBackground();

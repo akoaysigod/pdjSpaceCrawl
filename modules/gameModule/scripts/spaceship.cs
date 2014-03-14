@@ -15,6 +15,7 @@ function createSpaceShip() {
 	%spaceship.setCollisionLayers( 1, 2, 10, 12, 13 );
 	%spaceship.setCollisionGroups( 1, 2, 10, 12, 13 );
 	%spaceship.setFixedAngle( true );
+	%spaceship.setUpdateCallback( true );
 
 	%spaceship.health = 100;
 	%spaceship.fireRate = 5;
@@ -26,7 +27,6 @@ function createSpaceShip() {
 }
 
 function Ship::onCollision( %this, %collides, %collisionDetails ) {
-	echo( %collides.name );
 	%change = -1;
 	if ( %collides.name $= "enemyBullet" ) {
 		%change = %collides.damage;
@@ -53,5 +53,9 @@ function Ship::openShipMenu( %this ) {
 	%this.setPositionX( getWord( Mothership.getPosition(), 0 ) );
 
 	createMenuWindow();
+
+}
+
+function Ship::onUpdate( %this ) { 
 
 }

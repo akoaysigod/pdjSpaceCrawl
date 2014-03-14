@@ -1,9 +1,8 @@
-function messageWindowCreate( %message ) {
+function messageWindowCreate( %message, %type ) {
 	pause();
 	
 	%tmpWindow = new SceneWindow( MessageWindow ) {
 		Profile = GuiDefaultProfile;
-		UseObjectInputEvents = true;
 		size = "100 75";
 		position = "0 0";
 	};
@@ -16,7 +15,6 @@ function messageWindowCreate( %message ) {
 		size = "75 15";
 		position = "0 29";
 		SceneLayer = "5";
-		UseInputEvents = true;
 		UpdateCallBack = true;
 		Visible = false;
 	};
@@ -42,13 +40,20 @@ function messageWindowCreate( %message ) {
 	%scripter.isFinishedTyping = false;
 
 	MessageWindow.setupControls();
+
+	switch( $type ) {
+		case "item":
+			echo( "working" );
+		default:
+			echo( "not found" );
+	}
 }
 
 function MessageWindow::setupControls( %this ) { 
 	%input = new ScriptObject( InputManager );
 	%this.addInputListener( %input );
 
-	%controls = new ActionMap();
+	%controls = new ActionMap( messageControls );
 	%controls.bindCmd( keyboard, "enter", "nothing();", "MessageScript.continueText();" );
 	%controls.push();
 }
@@ -163,6 +168,7 @@ function FlasherClass::flash( %this ) {
 
 function deleteMessageBox() {
 	MessageScene.clear( true );
+	messageControls.pop();
 	InputManager.delete();
 	MessageWindow.delete();
 

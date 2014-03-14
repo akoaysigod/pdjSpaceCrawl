@@ -40,6 +40,14 @@ function pause() {
 		%tmp.setLinearVelocity( "0 0" );
 		%tmp.pauseAng = %tmp.getAngularVelocity();
 		%tmp.setAngularVelocity( 0 );
+
+		if ( !%tmp.isMoveToComplete() ) {
+			%tmp.hadMoveTo = true;
+			//echo( %tmp.name SPC %tmp.speed SPC %tmp.movePos );
+		} else { 
+			%tmp.hadMoveTo = false; 
+		}
+
 		if ( %tmp.isTimerActive() ) {
 			%tmp.hasTimer = true;
 			%tmp.stopTimer();
@@ -54,7 +62,6 @@ function pause() {
 			%tmp.isUpdating = false;
 		}
 	}
-
 	$pauseStatus = true;
 }
 
@@ -69,6 +76,11 @@ function unpause() {
 
 		%tmp.setLinearVelocity( %tmp.pauseVel );
 		%tmp.setAngularVelocity( %tmp.pauseAng );
+
+		if ( %tmp.hadMoveTo ) {
+			%tmp.moveTo( %tmp.movePos, %tmp.speed, false, false );
+		}
+
 		if ( %tmp.hasTimer ) {
 			%tmp.reactivateTimer();
 		} 

@@ -18,7 +18,9 @@ function createEnemyShip() {
 	%enemy.mother = false;
 	%enemy.isPatrolling = false;
 
+	%enemy.speed = 10;
 	%enemy.health = 2;
+	%enemy.movePos = -1;
 
 	return %enemy;
 }
@@ -47,11 +49,13 @@ function Enemy::hoverMode( %this ) {
 
 	if ( %x < %xM ) {
 		%x = %xM + 20;
-		%this.moveTo( %x SPC  %y, %this.speed );
+		%this.moveTo( %x SPC  %y, %this.speed, false, false );
 	} else { 
 		%x = %xM - 20;
-		%this.moveTo( %x SPC %y, %this.speed );
+		%this.moveTo( %x SPC %y, %this.speed, false, false );
 	}
+
+	%this.movePos = %x SPC %y;
 }
 
 function Enemy::patrol( %this ) {
@@ -78,7 +82,8 @@ function Enemy::attackMother( %this ) {
 
 	%pos = %x SPC %y + getRandom( 25, 50 );
 
-	%this.moveTo( %pos, %this.speed );
+	%this.moveTo( %pos, %this.speed, false, false );
+	%this.movePos = %pos;
 
 	%this.mother = true;
 }
@@ -154,10 +159,14 @@ function Enemy::onUpdate( %this ) {
 
 	if ( %this.mother ) {
 		%this.updateMother();
+		return;
 	}
 
 	if ( %this.following && %dist > 20 ) {
-		%this.moveTo( Ship.getPosition(), %this.speed );
+		%this.moveTo( Ship.getPosition(), %this.speed, false, false );
+		%this.movePos = Ship.getPosition();
+	} else {
+		%this.cancelMoveTo();
 	}
 
 	if ( %this.following && !%this.isTimerActive() ) {

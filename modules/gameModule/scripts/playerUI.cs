@@ -13,6 +13,7 @@ function createPlayerUI() {
 		position = "-0.2 -34";
 		SceneLayer = 0;
 	};
+	%health.maxSize = 48;
 	%playerUI.add( %health );
 
 	%healthGraphic = new Sprite() {
@@ -61,6 +62,10 @@ function HealthBar::updateHealth( %this, %change ) {
 	%currentHealth = Ship.health;
 	%size = %currentHealth / 100;
 	%sizeX = %size * %this.getWidth();
+
+	if ( %change == 0 ) {
+		%sizeX = %this.maxSize;
+	}
 
 	%x = getWord( %this.getPosition, 0 ) - ( ( 48 - %sizeX ) / 2 );
 

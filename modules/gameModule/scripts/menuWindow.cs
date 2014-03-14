@@ -49,6 +49,7 @@ function MenuBox::textTimer( %this ) {
 
 	%yOff = 20;
 	for ( %i = 0; %i != 5; %i++ ) {
+		%alpha = 1;
 		switch( %i ) {
 			case 0:
 				%text = "1. Repair Pod";
@@ -58,6 +59,9 @@ function MenuBox::textTimer( %this ) {
 				%text = "3. Change systems";
 			case 3:
 				%text = "4. Lift off";
+				if ( FuelBar.amount < 4 ) {
+					%alpha = 0.5;
+				}
 			case 4:
 				%text = "5. Jettison Pod";
 		}
@@ -71,7 +75,9 @@ function MenuBox::textTimer( %this ) {
 			SceneLayer = 0;
 			visible = false;
 		};
+		%option.setBlendAlpha( %alpha );
 		MenuScene.add( %option );
+		
 		Character.startTimer( typeText, %time, 1 );
 		%time += 50;
 		%yOff -= 5;
@@ -82,8 +88,29 @@ function MenuBox::textTimer( %this ) {
 
 function MenuBox::setupControls( %this ) {
 	%controls = new ActionMap( menuControls );
+	%controls.bindCmd( keyboard, "1", "nothing();", "MenuBox.repair();" );
+	%controls.bindCmd( keyboard, "2", "nothing();", "MenuBox.weapon();" );
+	%controls.bindCmd( keyboard, "3", "nothing();", "MenuBox.system();" );
+	%controls.bindCmd( keyboard, "4", "nothing();", "MenuBox.liftOff();" );
 	%controls.bindCmd( keyboard, "5", "nothing();", "MenuBox.jettison();" );
 	%controls.push();
+}
+
+function MenuBox::repair( %this ) {
+	Ship.health = 100;
+	HealthBar.updateHealth( 0 );
+}
+
+function MenuBox::weapon( %this ) {
+
+}
+
+function MenuBox::system( %this ) {
+
+}
+
+function MenuBox::liftOff( %this ) {
+
 }
 
 function MenuBox::jettison( %this ) {
@@ -99,9 +126,7 @@ function deleteMenuBox() {
 
 	unpause();
 
-	Ship.health = 100;
-	HealthBar.updateHealth( 0 );
-	Ship.setLinearVelocityY( 25 );
+	Ship.setLinearVelocity( "0 25" );
 }
 
 

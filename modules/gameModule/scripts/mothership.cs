@@ -47,7 +47,7 @@ function DropBox::onCollision( %this, %collides, %details ) {
 		%collides.safeDelete();
 		FuelBar.updateFuel();
 
-		messageWindowCreate( "testing because I don't remember press ENTER to continue asdasdasdasd " );
+		messageWindowCreate( "testing because I don't remember press ENTER to continue asdasdasdasd ", "item" );
 	}
 }
 

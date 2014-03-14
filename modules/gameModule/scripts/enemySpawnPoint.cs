@@ -4,11 +4,11 @@ function createEnemySpawnPoint( %xPos, %yPos ) {
 	
 	gameScene.add( %spawn );
 
-	%spawn.startTimer( spawnEnemy, 1000, 0 );
+	%spawn.startTimer( spawnEnemy, 1000000, 0 );
 }
 
 function SpawnPoint::reactivateTimer( %this ) {
-	%this.startTimer( spawnEnemy, 1000, 0 );
+	%this.startTimer( spawnEnemy, 10000000, 0 );
 }
 
 function SpawnPoint::spawnEnemy( %this ) {

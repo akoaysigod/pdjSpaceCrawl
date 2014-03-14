@@ -1,5 +1,6 @@
 function createSpaceShip() {
 	exec( "./playerUI.cs" );
+	exec( "./menuWindow.cs" );
 
 	%spaceship = new Sprite( Ship );
 	%spaceship.name = "ship";
@@ -23,14 +24,28 @@ function createSpaceShip() {
 
 function Ship::onCollision( %this, %collides, %collisionDetails ) {
 	echo( %collides.name );
-	%change = 0;
+	%change = -1;
 	if ( %collides.name $= "enemyBullet" ) {
 		%change = %collides.damage;
 		%collides.safeDelete();
-	} else if ( %collides.name $= "block" || %colldes.name $= "mothership" ) {
-		%change = VectorLen( %this.getLinearVelocity() / 4 );
+	} else if ( %collides.name $= "block" || %collides.name $= "mothership" ) {
+		%change = 1;
+		%change *= VectorLen( %this.getLinearVelocity() ) / 5;
+	} else if ( %collides.name $= "dropbox" ) {
+		%this.openShipMenu();
+	}
+
+	if ( %change == -1 ) {
+		return;
 	}
 
 	HealthBar.updateHealth( %change );
 }
 
+function Ship::openShipMenu( %this ) {
+	%this.setAngle( 0 );
+	%this.setPositionX( getWord( Mothership.getPosition(), 0 ) );
+
+	createMenuWindow();
+
+}

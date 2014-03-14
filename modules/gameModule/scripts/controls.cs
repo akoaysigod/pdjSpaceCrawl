@@ -199,14 +199,14 @@ function ShipControls::shoot( %this, %val ) {
 	if ( $pauseStatus ) {
 		return;
 	}
-	
-	if ( !%val ) {
-		%this.stopTimer();
+
+	if ( %val == 0 ) {
 		return;
-	} 
+	}
 	
-	if ( !%this.isTimerActive() ) {
-		//add warm up sound here probably?
-		%this.startTimer( bulletTimer, 750, 0 );
+	if ( LaserBar.canShoot ) {
+		%this.bulletTimer();
+
+		LaserBar.updateLaser( Ship.fireRate );
 	}
 }

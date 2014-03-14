@@ -59,7 +59,7 @@ function MenuBox::textTimer( %this ) {
 				%text = "3. Change systems";
 			case 3:
 				%text = "4. Lift off";
-				if ( FuelBar.amount < 4 ) {
+				if ( Mothership.fuel < 4 ) {
 					%alpha = 0.5;
 				}
 			case 4:
@@ -77,7 +77,7 @@ function MenuBox::textTimer( %this ) {
 		};
 		%option.setBlendAlpha( %alpha );
 		MenuScene.add( %option );
-		
+
 		Character.startTimer( typeText, %time, 1 );
 		%time += 50;
 		%yOff -= 5;

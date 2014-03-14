@@ -18,15 +18,16 @@ function createEnemyShip() {
 	%enemy.mother = false;
 	%enemy.isPatrolling = false;
 
+	%enemy.fireRate = 1000;
 	%enemy.speed = 10;
-	%enemy.health = 2;
+	%enemy.health = 1;
 	%enemy.movePos = -1;
 
 	return %enemy;
 }
 
 function Enemy::reactivateTimer( %this ) {
-	%this.startTimer( fireShot, 750, 0 );
+	%this.startTimer( fireShot, %this.fireRate, 0 );
 }
 
 function Enemy::hoverMode( %this ) {
@@ -139,7 +140,7 @@ function Enemy::updateMother( %this ) {
 	}
 
 	if ( %distMother < 50 && !%this.isTimerActive() ) {
-		%this.startTimer( fireShot, 750, 0 );
+		%this.startTimer( fireShot, %this.fireRate, 0 );
 		%this.setLinearVelocity( 0, 0 );
 		%this.hoverMode();
 		return;
@@ -170,7 +171,7 @@ function Enemy::onUpdate( %this ) {
 	}
 
 	if ( %this.following && !%this.isTimerActive() ) {
-		%this.startTimer( fireShot, 750, 0 );
+		%this.startTimer( fireShot, %this.fireRate, 0 );
 	} else if ( %this.following && %dist > 20 && %dist < 30 ) {
 		%this.stopTimer();
 	} 

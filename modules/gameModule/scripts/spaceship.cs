@@ -15,7 +15,10 @@ function createSpaceShip() {
 	%spaceship.setCollisionLayers( 1, 2, 10, 12, 13 );
 	%spaceship.setCollisionGroups( 1, 2, 10, 12, 13 );
 	%spaceship.setFixedAngle( true );
+
 	%spaceship.health = 100;
+	%spaceship.fireRate = 5;
+	%spaceship.rechargeRate = 250;
 
 	createPlayerUI();
 
@@ -29,8 +32,11 @@ function Ship::onCollision( %this, %collides, %collisionDetails ) {
 		%change = %collides.damage;
 		%collides.safeDelete();
 	} else if ( %collides.name $= "block" || %collides.name $= "mothership" ) {
-		%change = 1;
-		%change *= VectorLen( %this.getLinearVelocity() ) / 5;
+		%change = VectorLen( %this.getLinearVelocity() ) / 5;
+		%change = mFloor( %change );
+		if ( %change == 0 ) {
+			%change = 0.5;
+		}
 	} else if ( %collides.name $= "dropbox" ) {
 		%this.openShipMenu();
 	}

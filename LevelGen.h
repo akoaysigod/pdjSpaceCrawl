@@ -17,7 +17,7 @@ public:
     
     int getVal( int, int );
     void finish();
-    void initLevel( int, int );
+    void initLevel( int, int, int );
     int checkAlive( int, int );
     void automata(int, int, int);
     void clean();
@@ -35,8 +35,8 @@ ConsoleMethod( LevelGen, finish, void, 0, 0, "" ) {
     object->finish();
 }
 
-ConsoleMethod( LevelGen, initLevel, void, 0, 4, "" ) {
-    object->initLevel( dAtoi( argv[2] ), dAtoi( argv[3] ) );
+ConsoleMethod( LevelGen, initLevel, void, 5, 5, "" ) {
+    object->initLevel( dAtoi( argv[2] ), dAtoi( argv[3] ), dAtoi( argv[4] ) );
 }
 
 ConsoleMethod( LevelGen, automata, void, 5, 5, "" ) {

@@ -18,6 +18,8 @@ function createMothership() {
 	%mothership.setCollisionLayers( 1, 13 );
 	%mothership.setCollisionCallback( true );
 	%mothership.Size = "30 25";
+
+	%mothership.fuel = 0;
 	
 	return %mothership;
 }
@@ -45,6 +47,9 @@ function DropBox::onCollision( %this, %collides, %details ) {
 
 	if ( %collides.name $= "fuelItem" ) {
 		%collides.safeDelete();
+
+		Mothership.fuel += 1;
+
 		FuelBar.updateFuel();
 
 		messageWindowCreate( "testing because I don't remember press ENTER to continue asdasdasdasd ", "item" );

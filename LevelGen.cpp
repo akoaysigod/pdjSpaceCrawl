@@ -19,7 +19,7 @@ void LevelGen::finish() {
     placeStuff();
 }
 
-void LevelGen::initLevel( int x, int y ) {
+void LevelGen::initLevel( int x, int y, int rate ) {
     sizeX = x;
     sizeY = y;
     
@@ -32,7 +32,7 @@ void LevelGen::initLevel( int x, int y ) {
                 map[y][x] = 1;
                 continue;
             }
-            if ( rand() % 100 < 45 ) {
+            if ( rand() % 100 < rate ) {
                 map[y][x] = 1;
             } else {
                 map[y][x] = 0;

@@ -11,7 +11,7 @@ function createWorld() {
 	$scaleFactor = 2;
 	
 	%test = new LevelGen( GenLevel );
-	%test.initLevel( $width, $height );
+	%test.initLevel( $width, $height, 40 );
 	%test.automata( 6, 3, 20 );
 	%test.automata( 5, 5, 2 );
 	%test.finish();
@@ -51,22 +51,26 @@ function GenLevel::genSprites( %this ) {
 					%item.position = %xPos SPC %yPos;
 					%placeCount = 95;
 					%placeOne = true;
+					GameScene.add( %item );
 				} else if ( !%placeTwo && %chance > %placeCount ) {
 					if ( %x > $width / 2 && %y < $height / 2 ) {
 						%item.position = %xPos SPC %yPos;
 						%placeCount = 95;
 						%placeTwo = true;
+						GameScene.add( %item );
 					}
 				} else if ( !%placeThree && %chance > %placeCount ) {
 					if ( %x < $width / 2 && %y > $height / 2 ) {
 						%item.position = %xPos SPC %yPos;
 						%placeCount = 95;
 						%placeThree = true;
+						GameScene.add( %item );
 					}
 				} else if ( !%placeFour && %chance > %placeCount ) {
 					if ( %x > $width / 2 && %y > $height / 2 ) {
 						%item.position = %xPos SPC %yPos;
 						%placeFour = true;
+						GameScene.add( %item );
 					}
 				}
 			}
@@ -110,6 +114,7 @@ function GenLevel::genSprites( %this ) {
 function GenLevel::genEnemies() {
 	%sizeX = $width * $scaleFactor;
 	%sizeY = $height * $scaleFactor;
+
 	for ( %i = 0; %i != 4; %i++ ) {
 		%end = getRandom( 3, 5 );
 		for ( %k = 0; %k != %end; %k++ ) {

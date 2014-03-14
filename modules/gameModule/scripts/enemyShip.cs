@@ -47,10 +47,10 @@ function Enemy::hoverMode( %this ) {
 
 	if ( %x < %xM ) {
 		%x = %xM + 20;
-		%this.moveTo( %x SPC  %y, 10 );
+		%this.moveTo( %x SPC  %y, %this.speed );
 	} else { 
 		%x = %xM - 20;
-		%this.moveTo( %x SPC %y, 10 );
+		%this.moveTo( %x SPC %y, %this.speed );
 	}
 }
 
@@ -78,7 +78,7 @@ function Enemy::attackMother( %this ) {
 
 	%pos = %x SPC %y + getRandom( 25, 50 );
 
-	%this.moveTo( %pos, 10 );
+	%this.moveTo( %pos, %this.speed );
 
 	%this.mother = true;
 }
@@ -157,7 +157,7 @@ function Enemy::onUpdate( %this ) {
 	}
 
 	if ( %this.following && %dist > 20 ) {
-		%this.moveTo( Ship.getPosition(), 10 );
+		%this.moveTo( Ship.getPosition(), %this.speed );
 	}
 
 	if ( %this.following && !%this.isTimerActive() ) {

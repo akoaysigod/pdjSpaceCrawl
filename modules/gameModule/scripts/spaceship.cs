@@ -2,7 +2,12 @@ function createSpaceShip() {
 	exec( "./playerUI.cs" );
 	exec( "./menuWindow.cs" );
 
-	%spaceship = TamlRead( "modules/defaultFiles/playerShip.taml");
+	if ( Window.planetID == 0 ) {
+		%spaceship = TamlRead( "modules/defaultFiles/playerShip.taml");
+	} else {
+		%spaceship = TamlRead( "modules/saveFiles/playerShip.taml" );
+	}
+
 	%spaceship.isAttached = false;
 	
 	createPlayerUI();

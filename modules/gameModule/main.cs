@@ -8,20 +8,12 @@ function GameModule::create( %this ) {
 	createSceneWindow();
 	createScene();
 	Window.setScene( GameScene );
-	//GameScene.setDebugOn( "collision", "position", "aabb" );
-	
-	GameScene.playWidth = 200;
-	GameScene.playHeight = 100; 
-	GameScene.factor = 2;
+
+	Window.planetID = 0;
 	createWorld();
 	
 	setRandomSeed( getRealTime() );  
-	//new ScriptObject( InputManager );
-	//window.addInputListener( InputManager );
-	//InputManager.init();
-	
-	//createEnemy();
-	//createItem();
+	//GameScene.setDebugOn( "collision", "position", "aabb" );
 }
 
 function GameModule::destroy( %this ) {
@@ -97,4 +89,9 @@ function unpause() {
 	}	
 	Ship.setAngularVelocity( 0 );
 	$pauseStatus = false;
+}
+
+function saveGame() {
+	TamlWrite( Mothership, "modules/saveFiles/mothership.taml" );
+	TamlWrite( Ship, "modules/saveFiles/playerShip.taml" );
 }

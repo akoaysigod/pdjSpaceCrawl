@@ -6,9 +6,8 @@ function createWorld() {
 	exec( "./item.cs" );
 	exec( "./enemySpawnPoint.cs" );
 	exec( "./background.cs" );
-	
-	createBackground();
 
+	createBackground();
 
 	$height = 100;
 	$width = 200;
@@ -145,7 +144,7 @@ function GenLevel::genEnemies() {
 }
 
 function placeMothership() {
-	%start = getRandom( 0, $width );
+	%start = getRandom( 35, $width - 35 );
 	
 	%mothership = createMothership();
 	%mothership.position = %start SPC ( Mothership.getHeight() / 2 + ( $height * $scaleFactor ) - 1.1 );	GameScene.add( %mothership );

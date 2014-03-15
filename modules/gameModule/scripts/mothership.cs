@@ -1,7 +1,11 @@
 function createMothership() {
 	exec( "./MessageWindow.cs" );
 
-	%mothership = TamlRead( "modules/defaultFiles/mothership.taml" );
+	if ( Window.planetID == 0 ) {
+		%mothership = TamlRead( "modules/defaultFiles/mothership.taml" );
+	} else {
+		%mothership = TamlRead( "modules/saveFiles/mothership.taml");
+	}
 	%mothership.fuel = 4;
 
 	return %mothership;

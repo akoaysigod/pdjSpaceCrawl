@@ -116,6 +116,8 @@ function MenuBox::system( %this ) {
 }
 
 function MenuBox::liftOff( %this ) {
+	saveGame();
+	
 	createOverworld();
 
 	GameScene.delete();

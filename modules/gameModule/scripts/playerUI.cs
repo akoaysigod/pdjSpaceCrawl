@@ -24,6 +24,7 @@ function createPlayerUI() {
 		SceneLayer = 5;
 	};
 	%playerUI.add( %healthGraphic );
+	%health.updateHealth( -1000 );
 
 	%laser = new Sprite( LaserBar ) {
 		image = "gameModule:fuelBar";
@@ -72,7 +73,11 @@ function createPlayerUI() {
 }
 
 function HealthBar::updateHealth( %this, %change ) {
-	Ship.health = Ship.health - %change;
+	if ( %change == -1000 ) {
+		Ship.health = Ship.health;
+	} else {
+		Ship.health = Ship.health - %change;
+	}
 	%currentHealth = Ship.health;
 	%size = %currentHealth / 100;
 	%sizeX = %size * %this.maxSize;

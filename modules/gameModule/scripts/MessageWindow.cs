@@ -41,11 +41,9 @@ function messageWindowCreate( %message, %type ) {
 
 	MessageWindow.setupControls();
 
-	switch( $type ) {
+	switch$ ( %type ) {
 		case "item":
 			echo( "working" );
-		default:
-			echo( "not found" );
 	}
 }
 

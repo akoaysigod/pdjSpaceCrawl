@@ -1,10 +1,5 @@
-//
-//  LevelGen.cpp
-//  Torque2D
-//
-//  Created by Anthony Green on 3/10/14.
-//  Copyright (c) 2014 Michael Perry. All rights reserved.
-//
+//why you got to copyright my code michael perry =( 
+
 
 #include "LevelGen.h"
 IMPLEMENT_CONOBJECT( LevelGen );

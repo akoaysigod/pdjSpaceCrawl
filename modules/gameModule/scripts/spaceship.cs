@@ -2,25 +2,9 @@ function createSpaceShip() {
 	exec( "./playerUI.cs" );
 	exec( "./menuWindow.cs" );
 
-	%spaceship = new Sprite( Ship );
-	%spaceship.name = "ship";
-	%spaceship.setBodyType( dynamic );
-	%spaceship.Position = "0 20";
-	%spaceship.Size = "4 7";
-	%spaceship.SceneLayer = 1;
-	%spaceship.Image = "gameModule:SpaceShip";
-	%spaceship.createPolygonBoxCollisionShape(4, 5, 0, 1);
-	%spaceship.setCollisionCallback( true );
-	%spaceship.setSceneGroup( 0 );
-	%spaceship.setCollisionLayers( 1, 2, 10, 12, 13 );
-	%spaceship.setCollisionGroups( 1, 2, 10, 12, 13 );
-	%spaceship.setFixedAngle( true );
-	%spaceship.setUpdateCallback( true );
-
-	%spaceship.health = 100;
-	%spaceship.fireRate = 5;
-	%spaceship.rechargeRate = 250;
-
+	%spaceship = TamlRead( "modules/defaultFiles/playerShip.taml");
+	%spaceship.isAttached = false;
+	
 	createPlayerUI();
 
 	return %spaceship;
@@ -59,3 +43,36 @@ function Ship::openShipMenu( %this ) {
 function Ship::onUpdate( %this ) { 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	%spaceship = new Sprite( Ship );
+	%spaceship.name = "ship";
+	%spaceship.setBodyType( dynamic );
+	%spaceship.Position = "0 20";
+	%spaceship.Size = "4 7";
+	%spaceship.SceneLayer = 1;
+	%spaceship.Image = "gameModule:SpaceShip";
+	%spaceship.createPolygonBoxCollisionShape(4, 5, 0, 1);
+	%spaceship.setCollisionCallback( true );
+	%spaceship.setSceneGroup( 0 );
+	%spaceship.setCollisionLayers( 1, 2, 10, 12, 13 );
+	%spaceship.setCollisionGroups( 1, 2, 10, 12, 13 );
+	%spaceship.setFixedAngle( true );
+	%spaceship.setUpdateCallback( true );
+
+	%spaceship.health = 100;
+	%spaceship.fireRate = 5;
+	%spaceship.rechargeRate = 250;
+*/

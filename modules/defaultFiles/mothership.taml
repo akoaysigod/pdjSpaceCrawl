@@ -1,0 +1,34 @@
+<Sprite
+    Name="mothership"
+    SceneGroup="1"
+    Size="30 25"
+    BodyType="Static"
+    CollisionGroups="8194"
+    DefaultRestitution="0.5"
+    CollisionCallback="1"
+    Image="@asset=gameModule:mothership"
+    Frame="0"
+    fuel="0">
+    <Sprite.CollisionShapes>
+        <Edge>
+            <Point>-15 -12.5</Point>
+            <Point>15 -12.5</Point>
+        </Edge>
+        <Edge>
+            <Point>-15 -12.5</Point>
+            <Point>-15 4.5</Point>
+        </Edge>
+        <Edge>
+            <Point>15 -12.5</Point>
+            <Point>15 4.5</Point>
+        </Edge>
+        <Edge>
+            <Point>-15 4.5</Point>
+            <Point>-9 12.5</Point>
+        </Edge>
+        <Edge>
+            <Point>15 4.5</Point>
+            <Point>9 12.5</Point>
+        </Edge>
+    </Sprite.CollisionShapes>
+</Sprite>

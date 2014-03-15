@@ -3,6 +3,7 @@
 
 #include "LevelGen.h"
 IMPLEMENT_CONOBJECT( LevelGen );
+IMPLEMENT_CONOBJECT( CircleGen );
 
 int LevelGen::getVal( int x, int y ) {
     return map[y][x];

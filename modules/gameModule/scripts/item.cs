@@ -6,13 +6,15 @@ function createItem() {
 	%item.Size = "4 7";
 	%item.setBodyType( dynamic );
 	%item.createPolygonBoxCollisionShape();
-	%item.setCollisionLayers( 1, 2, 10 );
-	%item.setCollisionGroups( 1, 2, 10 );
+	%item.setCollisionLayers(  1, 2 );
+	%item.setCollisionGroups( 1, 2 );
 	%item.setSceneGroup( 25 );	
 	%item.setUpdateCallback( true );
 	%item.setFixedAngle( true );
-	
+
 	%item.joint = -1;
+	%item.isAttached = false;
+
 	return %item;
 }
 
@@ -24,13 +26,16 @@ function Item::findAngle( %this, %angleTo ) {
 function Item::onUpdate( %this ) { 
 	%dist = VectorDist( %this.getPosition(), Ship.getPosition() ); 
 
-	if ( GameScene.getJointCount() ) {
+	if ( Ship.isAttached && %this.isAttached ) {
 		%this.findAngle( Ship.getPosition() );
 		%this.line.position = %this.getPosition();
+		%this.applyLinearImpulse( "0 -1", %this.getPosition() );
 	}
 
-	if ( %dist < 11 && %this.joint == -1 ) {
+	if ( %dist < 11 && %this.joint == -1 && !Ship.isAttached ) {
 		%this.joint = GameScene.createDistanceJoint( Ship, %this, "0 0", "0 0", 10, 0.0, 1.0, false );
+		Ship.isAttached = true;
+		%this.isAttached = true;
 
 		%this.line = new ShapeVector();
 		%this.line.PolyList = "0 10 0.1 10 0.1 0 0 0";
@@ -44,6 +49,9 @@ function Item::onUpdate( %this ) {
 	if ( getWord( %this.getPosition(), 1 ) > getWord( Mothership.getPosition(), 1 ) + 15 ) {
 		if ( mAbs( getWord( %this.getPosition(), 0 ) - getWord( Mothership.getPosition(), 0 ) ) < 5 ) {
 			if ( %this.joint != -1 ) {
+				Ship.isAttached = false;
+				%this.isAttached = false;
+
 				%wtf = GameScene.deleteJoint( %this.joint );
 				%this.setLinearVelocity( "0 -5" );
 				%this.setUpdateCallback( false );

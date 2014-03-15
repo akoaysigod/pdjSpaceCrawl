@@ -1,26 +1,9 @@
 function createMothership() {
 	exec( "./MessageWindow.cs" );
 
-	%mothership = new Sprite( Mothership );
-	%mothership.name = "mothership";
-	%mothership.Image = "gameModule:mothership";
-	%mothership.SceneLayer = 0;
-	%mothership.setBodyType( static );
-	%mothership.createEdgeCollisionShape( -15, -12.5, 15, -12.5 );
-	%mothership.createEdgeCollisionShape( -15, -12.5, -15, 4.5 );
-	%mothership.createEdgeCollisionShape( 15, -12.5, 15, 4.5 );
-	%mothership.createEdgeCollisionShape( -15, 4.5, -9, 12.5 );
-	%mothership.createEdgeCollisionShape( 15, 4.5, 9, 12.5 );
-	
-	%mothership.setDefaultRestitution( 0.5 );
-	%mothership.setSceneGroup( 1 );
-	%mothership.setCollisionGroups( 1, 13 );
-	%mothership.setCollisionLayers( 1, 13 );
-	%mothership.setCollisionCallback( true );
-	%mothership.Size = "30 25";
+	%mothership = TamlRead( "modules/defaultFiles/mothership.taml" );
+	%mothership.fuel = 4;
 
-	%mothership.fuel = 0;
-	
 	return %mothership;
 }
 
@@ -61,3 +44,37 @@ function Mothership::onCollision( %this, %collides, %details ) {
 		%collides.safeDelete();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	%mothership = new Sprite( Mothership );
+	%mothership.name = "mothership";
+	%mothership.Image = "gameModule:mothership";
+	%mothership.SceneLayer = 0;
+	%mothership.setBodyType( static );
+	%mothership.createEdgeCollisionShape( -15, -12.5, 15, -12.5 );
+	%mothership.createEdgeCollisionShape( -15, -12.5, -15, 4.5 );
+	%mothership.createEdgeCollisionShape( 15, -12.5, 15, 4.5 );
+	%mothership.createEdgeCollisionShape( -15, 4.5, -9, 12.5 );
+	%mothership.createEdgeCollisionShape( 15, 4.5, 9, 12.5 );
+	
+	%mothership.setDefaultRestitution( 0.5 );
+	%mothership.setSceneGroup( 1 );
+	%mothership.setCollisionGroups( 1, 13 );
+	%mothership.setCollisionLayers( 1, 13 );
+	%mothership.setCollisionCallback( true );
+	%mothership.Size = "30 25";
+
+	%mothership.fuel = 0;
+*/

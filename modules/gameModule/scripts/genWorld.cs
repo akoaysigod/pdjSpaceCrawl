@@ -5,6 +5,10 @@ function createWorld() {
 	exec( "./stationGun.cs" );
 	exec( "./item.cs" );
 	exec( "./enemySpawnPoint.cs" );
+	exec( "./background.cs" );
+	
+	createBackground();
+
 
 	$height = 100;
 	$width = 200;
@@ -151,7 +155,7 @@ function placeMothership() {
 	%playership = createSpaceShip();
 	%controls = ShipControls.createInstance();
 	%playership.addBehavior( %controls );
-	%playership.Position = %start SPC ( $height * $scaleFactor ) + 25;
+	%playership.Position = %mothership.getPosition();//%start SPC ( $height * $scaleFactor ) + 25;
 	
 	GameScene.add( %playership );
 	

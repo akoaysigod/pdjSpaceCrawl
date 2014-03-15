@@ -1,5 +1,11 @@
 function createMenuWindow() {
+	exec( "./overworld.cs" );
+
 	pause();
+
+	if ( isObject( OverworldScene ) ) {
+		removeOverworld();
+	}
 
 	%tmpWindow = new SceneWindow( MenuWindow ) {
 		Profile = GuiDefaultProfile;
@@ -110,7 +116,11 @@ function MenuBox::system( %this ) {
 }
 
 function MenuBox::liftOff( %this ) {
+	createOverworld();
 
+	GameScene.delete();
+	removePlayerUI();
+	deleteMenuBox();
 }
 
 function MenuBox::jettison( %this ) {
@@ -120,13 +130,17 @@ function MenuBox::jettison( %this ) {
 
 function deleteMenuBox() {
 	MenuScene.clear( true );
+	//delete menuscene?
 	menuControls.pop();
 	InputManager.delete();
 	MenuWindow.delete();
 
 	unpause();
 
-	Ship.setLinearVelocity( "0 25" );
+	if ( isObject( Ship ) ) {
+		Ship.setLinearVelocity( "0 30" );
+		Ship.setLinearDamping( 1 );
+	}
 }
 
 

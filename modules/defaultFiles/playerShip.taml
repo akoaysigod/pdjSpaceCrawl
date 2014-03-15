@@ -1,0 +1,23 @@
+<Sprite
+    Name="ship"
+    SceneLayer="1"
+    Size="4 7"
+    Position="0 20"
+    FixedAngle="1"
+    CollisionGroups="13318"
+    UpdateCallback="1"
+    CollisionCallback="1"
+    Image="@asset=gameModule:SpaceShip"
+    Frame="0"
+    fireRate="5"
+    health="100"
+    rechargeRate="250">
+    <Sprite.CollisionShapes>
+        <Polygon>
+            <Point>-2 -1.5</Point>
+            <Point>2 -1.5</Point>
+            <Point>2 3.5</Point>
+            <Point>-2 3.5</Point>
+        </Polygon>
+    </Sprite.CollisionShapes>
+</Sprite>

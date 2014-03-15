@@ -3,7 +3,6 @@ function GameModule::create( %this ) {
 	exec( "./scripts/gameWindow.cs" );
 	exec( "./scripts/gameScene.cs" );
 	exec( "./scripts/genWorld.cs" );
-	exec( "./scripts/background.cs" );
 	exec( "./scripts/controls.cs" );
 
 	createSceneWindow();
@@ -16,8 +15,7 @@ function GameModule::create( %this ) {
 	GameScene.factor = 2;
 	createWorld();
 	
-	createBackground();
-
+	setRandomSeed( getRealTime() );  
 	//new ScriptObject( InputManager );
 	//window.addInputListener( InputManager );
 	//InputManager.init();
@@ -69,6 +67,10 @@ function pause() {
 }
 
 function unpause() {
+	if ( !isObject( GameScene ) ) {
+		return;
+	}
+
 	%k = GameScene.getCount();
 	for ( %i = 0; %i != %k; %i++ ) {
 		%tmp = GameScene.getObject( %i );

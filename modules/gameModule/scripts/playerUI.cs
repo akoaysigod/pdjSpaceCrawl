@@ -135,3 +135,9 @@ function LaserBar::updateLaser( %this, %change ) {
 		%this.canShoot = false;
 	}
 }
+
+function removePlayerUI() {
+	UIScene.clear( true );
+	UIScene.delete();
+	UIWindow.delete();
+}

@@ -6,8 +6,11 @@ function createSpaceShip() {
 	if ( Window.planetID == 0 ) {
 		%spaceship = TamlRead( "modules/defaultFiles/playerShip.taml");
 		%spaceship.hasGameOver = false;
-		%spaceship.hasShields = false;
+		%spaceship.hasShields = true;
 		%spaceship.shieldsActive = false;
+		%spaceship.hasBoosters = false;
+		%spceship.hasReverseThruster = false;
+		%spaceship.hasSpecial = false;
 	} else {
 		%spaceship = TamlRead( "modules/saveFiles/playerShip.taml" );
 	}

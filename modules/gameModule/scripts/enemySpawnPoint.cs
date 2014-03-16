@@ -4,7 +4,12 @@ function createEnemySpawnPoint( %xPos, %yPos ) {
 	
 	gameScene.add( %spawn );
 
-	%spawn.spawnTimer = 180000;
+	
+	%spawn.spawnTimer = 180000 - ( GameScene.planetID * 10000 );
+	if ( %spawn.spawnTimer < 100000 ) {
+		%spawn.spawnTimer = 100000;
+	}
+	
 	%spawn.startTimer( spawnEnemy, %spawn.spawnTimer , 0 );
 }
 

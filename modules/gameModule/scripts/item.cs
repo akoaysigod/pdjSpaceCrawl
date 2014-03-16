@@ -13,7 +13,7 @@ function createItem( %itemType ) {
 			%item.image = "gameModule:shields";
 			%item.size = "5 5";
 			%item.weight = "0 -3";
-			%item.text = "You found a shield generator for your POD. Press 1 to activate.";
+			%item.text = "You found a shield generator for your POD. Press Q to activate.";
 
 		case "shipPartOne":
 			%item.name = "partOneItem";

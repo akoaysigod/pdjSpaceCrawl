@@ -56,20 +56,36 @@ function MenuBox::textTimer( %this ) {
 	%yOff = 20;
 	for ( %i = 0; %i != 5; %i++ ) {
 		%alpha = 1;
+		%label = " ";
 		switch( %i ) {
 			case 0:
-				%text = "1. Repair Pod";
+				%label = "repairPod";
+				if ( Ship.health == 100 ) {
+					%text = "1.Repair Pod";
+					%alpha = 0.5;
+				} else { 
+					%text = "1.Repair Pod" SPC mCeil( 100 - Ship.health );
+				}
 			case 1:
-				%text = "2. Change weapon";
+				%label = "repairShip";
+				if ( Mothership.health == 100 ) {
+					%text = "2.Repair Ship";
+					%alpha = 0.5;
+				} else {
+					%text = "2.Repair Ship" SPC mCeil( 100 - Mothership.health ) * 2;
+				}
 			case 2:
-				%text = "3. Change systems";
+				%text = "3.Make ammo";
+				if ( !Ship.hasSpecial ) {
+					%alpha = 0.5;
+				}
 			case 3:
-				%text = "4. Lift off";
+				%text = "4.Lift off";
 				if ( Mothership.fuel < 4 || GameScene.hasMotherPart ) {
 					%alpha = 0.5;
 				}
 			case 4:
-				%text = "5. Jettison Pod";
+				%text = "5.Jettison Pod";
 		}
 
 		%option = new ImageFont( Character ) {
@@ -81,6 +97,7 @@ function MenuBox::textTimer( %this ) {
 			SceneLayer = 0;
 			visible = false;
 		};
+		%option.label = %label;
 		%option.setBlendAlpha( %alpha );
 		MenuScene.add( %option );
 
@@ -95,16 +112,48 @@ function MenuBox::textTimer( %this ) {
 function MenuBox::setupControls( %this ) {
 	%controls = new ActionMap( menuControls );
 	%controls.bindCmd( keyboard, "1", "nothing();", "MenuBox.repair();" );
-	%controls.bindCmd( keyboard, "2", "nothing();", "MenuBox.weapon();" );
-	%controls.bindCmd( keyboard, "3", "nothing();", "MenuBox.system();" );
+	%controls.bindCmd( keyboard, "2", "nothing();", "MenuBox.repairShip();" );
+	%controls.bindCmd( keyboard, "3", "nothing();", "MenuBox.weapon();" );
 	%controls.bindCmd( keyboard, "4", "nothing();", "MenuBox.liftOff();" );
 	%controls.bindCmd( keyboard, "5", "nothing();", "MenuBox.jettison();" );
 	%controls.push();
 }
 
 function MenuBox::repair( %this ) {
-	Ship.health = 100;
-	HealthBar.updateHealth( 0 );
+	%cost = mCeil( 100 - Ship.health );
+	echo( "wtf" );
+	if ( Mothership.money > %cost ) {
+		Ship.health = 100;
+		HealthBar.updateHealth( 0 );
+		Mothership.money -= %cost;
+		MoneyLabel.updateMoney( %cost * -1 );
+
+		for ( %i = 0; %i != MenuScene.getCount(); %i++ ) {
+			%t = MenuScene.getObject( %i );
+			if ( %t.label $= "repairPod" ){
+				%t.text = "1.Repair Pod";
+				%t.setBlendAlpha( 0.5 );
+			}
+		}
+	}
+}
+
+function MenuBox::repairShip( %this ) {
+	%cost = mCeil( 100 - Mothership.health ) * 2;
+	if ( Mothership.money > %cost ) {
+		Mothership.health = 100;
+		MotherHealth.updateHealth( 0 );
+		Mothership.money -= %cost;
+		MoneyLabel.updateMoney( %cost * -1 );
+
+		for ( %i = 0; %i != MenuScene.getCount(); %i++ ) {
+			%t = MenuScene.getObject( %i );
+			if ( %t.label $= "repairShip" ){
+				%t.text = "2.Repair Ship";
+				%t.setBlendAlpha( 0.5 );
+			}
+		}
+	}
 }
 
 function MenuBox::weapon( %this ) {

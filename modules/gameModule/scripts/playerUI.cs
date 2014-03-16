@@ -97,8 +97,37 @@ function createPlayerUI() {
 	};
 	%playerUI.add( %motherLabel );
 
+	%money = new ImageFont( MoneyLabel ) {
+		image = "gameModule:font";
+		FontSize = 2;
+		text = "$: ";
+		position = "35 35";
+		SceneLayer = 0;
+		textAlignment = "center";
+	};
+	%money.updateMoney( 0 );
+	%playerUI.add( %money );
+
 	%playerUIWindow.setScene( %playerUI );
 	Canvas.add( %playerUIWindow );
+}
+
+function MoneyLabel::updateMoney( %this, %change ) {
+	Mothership.money += %change;
+
+	if ( isObject( Monies ) ) {
+		Monies.delete();
+	}
+
+	%money = new ImageFont( Monies ) {
+		image = "gameModule:font";
+		FontSize = 2;
+		text = Mothership.money;
+		position = "50 36";
+		SceneLayer = 0;
+		textAlignment = "right";
+	};
+	UIScene.add( %money );
 }
 
 function MotherHealth::flasher( %this ) {

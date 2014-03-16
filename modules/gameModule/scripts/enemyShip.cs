@@ -23,6 +23,8 @@ function createEnemyShip() {
 	%enemy.health = 1;
 	%enemy.movePos = -1;
 
+	%enemy.value = 25;
+
 	return %enemy;
 }
 
@@ -136,6 +138,7 @@ function Enemy::takeDamage( %this, %damage ) {
 	echo( %this.health );
 	if ( %this.health <= 0 ) {
 		%this.safeDelete();
+		MoneyLabel.updateMoney( %this.value );
 	}
 }
 

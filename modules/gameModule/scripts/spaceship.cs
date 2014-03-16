@@ -1,9 +1,13 @@
 function createSpaceShip() {
 	exec( "./playerUI.cs" );
 	exec( "./menuWindow.cs" );
+	exec( "./shields.cs" );
 
 	if ( Window.planetID == 0 ) {
 		%spaceship = TamlRead( "modules/defaultFiles/playerShip.taml");
+		%spaceship.hasGameOver = false;
+		%spaceship.hasShields = false;
+		%spaceship.shieldsActive = false;
 	} else {
 		%spaceship = TamlRead( "modules/saveFiles/playerShip.taml" );
 	}
@@ -16,7 +20,7 @@ function createSpaceShip() {
 }
 
 function Ship::onCollision( %this, %collides, %collisionDetails ) {
-	%change = -1;
+	%change = -1000;
 	if ( %collides.name $= "enemyBullet" ) {
 		%change = %collides.damage;
 		%collides.safeDelete();
@@ -28,10 +32,6 @@ function Ship::onCollision( %this, %collides, %collisionDetails ) {
 		}
 	} else if ( %collides.name $= "dropbox" ) {
 		%this.openShipMenu();
-	}
-
-	if ( %change == -1 ) {
-		return;
 	}
 
 	HealthBar.updateHealth( %change );

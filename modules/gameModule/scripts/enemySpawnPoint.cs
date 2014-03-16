@@ -4,14 +4,24 @@ function createEnemySpawnPoint( %xPos, %yPos ) {
 	
 	gameScene.add( %spawn );
 
-	%spawn.startTimer( spawnEnemy, 1000000, 0 );
+	%spawn.spawnTimer = 180000;
+	%spawn.startTimer( spawnEnemy, %spawn.spawnTimer , 0 );
 }
 
+//I ran out of time to fix this oh well! don't pause a lot I guess!
 function SpawnPoint::reactivateTimer( %this ) {
-	%this.startTimer( spawnEnemy, 10000000, 0 );
+	if ( %this.spawnTimer > 10000 ) {
+		%this.spawnTimer -= 10000;
+	}
+	%this.startTimer( spawnEnemy, %this.spawntimer, 0 );
 }
 
 function SpawnPoint::spawnEnemy( %this ) {
+	if ( %this.spawnTimer > 60000 ) {
+		%this.spawnTimer -= 60000;
+	} else if ( %this.spawnTimer > 10000 ) { 
+		%this.spawnTimer -= 10000;
+	}
 	%enemy = createEnemyShip();
 	%enemy.position = %this.getPosition();
 

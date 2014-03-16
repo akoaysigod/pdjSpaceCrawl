@@ -2,23 +2,25 @@
     Name="Ship"
     SceneLayer="1"
     Size="4 7"
-    Position="100 215.44"
+    Position="114 212.91"
     FixedAngle="1"
     Awake="0"
     CollisionGroups="13318"
-    LinearDamping="0.8"
     CollisionCallback="1"
     Image="@asset=gameModule:SpaceShip"
     Frame="0"
     fireRate="5"
     hadMoveTo="0"
+    hasGameOver="0"
+    hasShields="0"
     hasTimer="0"
-    health="85"
+    health="100"
     isAttached="0"
     isUpdating="0"
     pauseAng="0"
-    pauseVel="-3.5763e-008 0"
-    rechargeRate="250">
+    pauseVel="0 0"
+    rechargeRate="250"
+    shieldsActive="0">
     <Sprite.Behaviors>
         <ShipControls
             Id="1"
@@ -26,6 +28,7 @@
             leftKey="keyboard A"
             rightKey="keyboard D"
             spaceKey="keyboard space"
+            oneKey="keyboard 1"
             escapeKey="keyboard escape" />
         <ShipControls
             Id="2"
@@ -33,20 +36,7 @@
             leftKey="keyboard A"
             rightKey="keyboard D"
             spaceKey="keyboard space"
-            escapeKey="keyboard escape" />
-        <ShipControls
-            Id="3"
-            upKey="keyboard W"
-            leftKey="keyboard A"
-            rightKey="keyboard D"
-            spaceKey="keyboard space"
-            escapeKey="keyboard escape" />
-        <ShipControls
-            Id="4"
-            upKey="keyboard W"
-            leftKey="keyboard A"
-            rightKey="keyboard D"
-            spaceKey="keyboard space"
+            oneKey="keyboard 1"
             escapeKey="keyboard escape" />
     </Sprite.Behaviors>
     <Sprite.CollisionShapes>

@@ -3,10 +3,15 @@ function createMothership() {
 
 	if ( Window.planetID == 0 ) {
 		%mothership = TamlRead( "modules/defaultFiles/mothership.taml" );
+		%mothership.hasUpgradeOne = false;
+		%mothership.hasUpgradeTwo = false;
+		%mothership.hasUpgradeThree = false;
+		%mothership.hasUpgradeFour = false;
+		%mothership.health = 100;
 	} else {
 		%mothership = TamlRead( "modules/saveFiles/mothership.taml");
 	}
-	%mothership.fuel = 4;
+	%mothership.fuel = 0;
 
 	return %mothership;
 }
@@ -27,24 +32,65 @@ function Mothership::createDropBox( %this ) {
 	GameScene.add( %dropBox );
 }
 
+function Mothership::takeDamage( %this, %dmg ) {
+	if ( %this.hasUpgradeOne ) {
+		MotherHealth.updateHealth( %dmg / 10 );
+	} else { 
+		MotherHealth.updateHealth( %dmg / 5);
+	}
+
+	if ( !isObject( Alert ) ) {
+		MotherHealth.setupAlert();
+	}
+}
+
 function DropBox::onCollision( %this, %collides, %details ) {
 	if ( %collides.name $= "enemyBullet" ) {
+		Mothership.takeDamage( %collides.damage );
 		%collides.safeDelete();
 	}
 
-	if ( %collides.name $= "fuelItem" ) {
-		%collides.safeDelete();
+	switch$ ( %collides.name ) {
+		case "fuelItem":
+			messageWindowCreate( %collides.text );
+			%collides.safeDelete();
+			Mothership.fuel += 1;
+			FuelBar.updateFuel();
 
-		Mothership.fuel += 1;
+		case "shieldItem":
+			messageWindowCreate( %collides.text );
+			%collides.safeDelete();
+			Ship.hasShields = true;
 
-		FuelBar.updateFuel();
+		case "shipPartOne":
+			messageWindowCreate( %collides.text );
+			%collides.safeDelete();
+			Mothership.hasUpgradeOne = true;
+			GameScene.hasMotherPart = false;
 
-		messageWindowCreate( "testing because I don't remember press ENTER to continue asdasdasdasd ", "item" );
+		case "shipPartTwo":
+			messageWindowCreate( %collides.text );
+			%collides.safeDelete();
+			Mothership.hasUpgradeTwo = true;
+			GameScene.hasMotherPart = false;
+
+		case "shipPartThree":
+			messageWindowCreate( %collides.text );
+			%collides.safeDelete();
+			Mothership.hasUpgradeThree = true;
+			GameScene.hasMotherPart = false;
+
+		case "shipPartFour":
+			messageWindowCreate( %collides.text );
+			%collides.safeDelete();
+			Mothership.hasUpgradeFour = true;
+			GameScene.hasMotherPart = false;
 	}
 }
 
 function Mothership::onCollision( %this, %collides, %details ) {
 	if ( %collides.name $= "enemyBullet" ) {
+		%this.takeDamage( %collides.damage );
 		%collides.safeDelete();
 	}
 }

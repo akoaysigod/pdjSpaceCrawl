@@ -1,4 +1,4 @@
-function messageWindowCreate( %message, %type ) {
+function messageWindowCreate( %message ) {
 	pause();
 	
 	%tmpWindow = new SceneWindow( MessageWindow ) {
@@ -40,11 +40,6 @@ function messageWindowCreate( %message, %type ) {
 	%scripter.isFinishedTyping = false;
 
 	MessageWindow.setupControls();
-
-	switch$ ( %type ) {
-		case "item":
-			echo( "working" );
-	}
 }
 
 function MessageWindow::setupControls( %this ) { 
@@ -139,7 +134,6 @@ function MessageScriptClass::timerText( %this ) {
 		FontSize = "2";
 		Position = %x SPC %y;
 		SceneLayer = "0";
-		//BlendColor = "0, 0, 0";
 		TextAlignment = "center";
 	};
 	MessageScene.add( %tmp );

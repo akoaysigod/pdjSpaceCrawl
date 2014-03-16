@@ -3,6 +3,14 @@ function createOverworld() {
 		%overworld = new Scene( OverworldScene );
 		%circles = new CircleGen( Circles );
 		%circles.createPlanets();
+
+		%back = new Sprite() {
+			image = "gameModule:overworldBackground";
+			size = "100 75";
+			position = "50 37.5";
+			SceneLayer = 10;
+		};
+		%overworld.add( %back );
 	} else {
 		%overworld = TamlRead( "modules/saveFiles/overworld.taml" );
 

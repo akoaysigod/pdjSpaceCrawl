@@ -7,12 +7,11 @@ function createWorld() {
 	exec( "./enemySpawnPoint.cs" );
 	exec( "./background.cs" );
 
-	createBackground();
-
 	$height = 100;
 	$width = 200;
 	$scaleFactor = 2;
-	
+	createBackground();
+
 	%test = new LevelGen( GenLevel );
 	%test.initLevel( $width, $height, 40 );
 	%test.automata( 6, 3, 20 );
@@ -22,6 +21,7 @@ function createWorld() {
 	//auto( 6, 3, 20 );
 	//auto( 5, 5, 1 );
 	%test.genSprites();	
+	%test.placeItems();
 	%test.genEnemies();
 	
 	placeMothership();
@@ -37,47 +37,9 @@ function GenLevel::genSprites( %this ) {
 	%moveY = %blockSize;
 	%simulate = 1;
 
-	%placeOne = false;
-	%placeTwo = false;
-	%placeThree = false;
-	%placeFour = false;
-	%placeCount = 95;
-
 	for ( %y = 0; %y != $height; %y++ ) {
 		for ( %x = 0; %x != $width; %x++ ) {
 			%cell = %this.getVal( %x, %y );
-
-			if ( %cell == 3 ) {
-				%item = createItem();
-				%chance = getRandom( 0, 99 );
-				if ( !%placeOne && %chance > %placeCount ) {
-					%item.position = %xPos SPC %yPos;
-					%placeCount = 95;
-					%placeOne = true;
-					GameScene.add( %item );
-				} else if ( !%placeTwo && %chance > %placeCount ) {
-					if ( %x > $width / 2 && %y < $height / 2 ) {
-						%item.position = %xPos SPC %yPos;
-						%placeCount = 95;
-						%placeTwo = true;
-						GameScene.add( %item );
-					}
-				} else if ( !%placeThree && %chance > %placeCount ) {
-					if ( %x < $width / 2 && %y > $height / 2 ) {
-						%item.position = %xPos SPC %yPos;
-						%placeCount = 95;
-						%placeThree = true;
-						GameScene.add( %item );
-					}
-				} else if ( !%placeFour && %chance > %placeCount ) {
-					if ( %x > $width / 2 && %y > $height / 2 ) {
-						%item.position = %xPos SPC %yPos;
-						%placeFour = true;
-						GameScene.add( %item );
-					}
-				}
-			}
-			%placeCount -= 1;
 
 			if ( %cell == 1 || %cell == 11 || %cell == 31 ) {
 				%block = new Sprite();
@@ -108,6 +70,140 @@ function GenLevel::genSprites( %this ) {
 				createEnemySpawnPoint( %xPos, %yPos );
 			}
 			%xPos += %moveX;	
+		}
+		%xPos = %xStart;
+		%yPos += %moveY;
+	}
+}
+
+function GenLevel::placeItems( %this ) {
+	%xPos = 0;
+	%xStart = %xPos;
+	%yPos = 0;
+	%moveX = $scaleFactor;
+	%moveY = $scaleFactor;
+
+	%placeOne = false;
+	%placeTwo = false;
+	%placeThree = false;
+	%placeFour = false;
+	%shieldsPlaced = false;
+	%placeCount = 95;
+
+	%coin = getRandom( 0, 1 );
+	%treasure = getRandom( 1, 3 );
+
+	%partOne = Mothership.hasUpgradeOne;
+	%partTwo = Mothership.hasUpgradeTwo;
+	%partThree = Mothership.hasUpgradeThree;
+	%partFour = Mothership.hasUpgradeFour;
+	%placePart = getRandom( 1, 3 );
+	%quad = getRandom( 0, 3 );
+
+	for ( %y = 0; %y != $height; %y++ ) {
+		for ( %x = 0; %x != $width; %x++ ) {
+			%cell = %this.getVal( %x, %y );
+
+			%chance = getRandom( 0, 99 );
+			%min = getRandom( 10, 20 );
+			if ( getRandom( 0, 1 ) ) {
+				%min = 0;
+			}
+
+			if ( %cell == 3 ) {
+				if ( !%placeOne && %chance > %placeCount ) {
+					%item = createItem( "fuel" );
+					%item.position = %xPos SPC %yPos;
+					%placeCount = 95;
+					%placeOne = true;
+					GameScene.add( %item );
+					continue;
+				} else if ( !%placeTwo && %chance > %placeCount ) {
+					if ( %x - %min > $width / 2 && %y + %min < $height / 2 ) {
+						%item = createItem( "fuel" );
+						%item.position = %xPos SPC %yPos;
+						%placeCount = 95;
+						%placeTwo = true;
+						GameScene.add( %item );
+						continue;
+					}
+				} else if ( !%placeThree && %chance > %placeCount ) {
+					if ( %x + %min < $width / 2 && %y - %min > $height / 2 ) {
+						%item = createItem( "fuel" );
+						%item.position = %xPos SPC %yPos;
+						%placeCount = 95;
+						%placeThree = true;
+						GameScene.add( %item );
+						continue;
+					}
+				} else if ( !%placeFour && %chance > %placeCount ) {
+					if ( %x - %min > $width / 2 && %y - %min > $height / 2 ) {
+						%item = createItem( "fuel" );
+						%item.position = %xPos SPC %yPos;
+						%placeFour = true;
+						GameScene.add( %item );
+						continue;
+					}
+				}
+
+				if ( Window.planetID == 0 && !%shieldsPlaced ) {
+					if ( %x > $width / 2 && %y > $height / 2 ) {
+						if ( %chance > 95 && !%shieldsPlaced ) {
+							%shields = createItem( "shields" );
+							%shields.position = %xPos SPC %yPos;
+							%shieldsPlaced = true;
+							GameScene.add( %shields );
+							continue;
+						}
+					}
+
+					if ( %x > $width / 2 && %y < $height / 2 ) {
+						if ( %chance > 95 && !%hasUpgradeOne ) {
+							%item = createItem( "shipPartOne" );
+							%item.position = %xPos SPC %yPos;
+							%hasUpgradeOne = true;
+							GameScene.hasMotherPart = true;
+							GameScene.add( %item );
+							continue;
+						}
+					}
+				}
+
+				if ( Window.planetID > 0 ) {
+					if ( %coin && %chance > 95 ) {
+						if ( %quad == 0 ) {
+							if ( !( %x < $width / 2 && %y < $height / 2 ) ) {
+								continue;
+							}
+						} else if ( %quad == 1 ) {
+							if ( !( %x > $width / 2 && %y < $height / 2 ) ) {
+								continue;
+							}
+						} else if ( %quad == 2 ) {
+							if ( !( %x < $width / 2 && %y > $height / 2 ) ) { 
+								continue;
+							}
+						} else if ( %quad == 3 ) {
+							if ( !( %x > $width / 2 && %y > $height / 2 ) ) {
+								continue;
+							}
+						}
+
+						%coin = 0;
+						GameScene.hasMotherPart = true;
+						switch ( %placePart ) {
+							case 1:
+								%part = createItem( "shipPartTwo" );
+							case 2:
+								%part = createItem( "shipPartThree" );
+							case 3:
+								%part = createItem( "shipPartFour" );
+						}
+					}
+				}
+			}
+			%placeCount -= 1;
+			%xPos += %moveX;
 		}
 		%xPos = %xStart;
 		%yPos += %moveY;
@@ -155,15 +251,11 @@ function placeMothership() {
 	%controls = ShipControls.createInstance();
 	%playership.addBehavior( %controls );
 	%playership.Position = %mothership.getPosition();//%start SPC ( $height * $scaleFactor ) + 25;
-	
 	GameScene.add( %playership );
 	
 	Window.mount( %playership, 0, 0, 10, true, false );
 	Window.setViewLimitOn( 0, 0, $width * $scaleFactor, ( $height * $scaleFactor ) + 75);
-	
-	%item = createItem();
-	%item.setPositionX( %start + 20 );
-	%item.setPositionY( 200 + 15 );
+
 	GameScene.add( %item );
 }
 

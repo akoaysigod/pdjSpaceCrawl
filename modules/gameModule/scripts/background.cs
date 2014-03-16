@@ -101,7 +101,7 @@ function setLimits() {
 	%left = new SceneObject();
 	%left.name = "border";
 	%left.createEdgeCollisionShape( 0, 0, 0, 75 );
-	%left.position = 0 SPC $height * $scaleFactor;
+	%left.position = 1 SPC $height * $scaleFactor;
 	%left.setBodyType( static );
 	GameScene.add( %left );
 	

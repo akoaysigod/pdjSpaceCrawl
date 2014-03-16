@@ -13,6 +13,7 @@ function GameModule::create( %this ) {
 	createWorld();
 	
 	setRandomSeed( getRealTime() );  
+	
 	//GameScene.setDebugOn( "collision", "position", "aabb" );
 }
 
@@ -89,6 +90,34 @@ function unpause() {
 	}	
 	Ship.setAngularVelocity( 0 );
 	$pauseStatus = false;
+}
+
+function gameOver() {
+	pause();
+	Ship.hasGameOver = true;
+	saveGame();
+
+	for ( %i = 0; %i != GameScene.getCount(); %i ++ ) {
+		%t = gameScene.getObject( %i );
+		%t.safeDelete();
+	}
+	
+	for ( %i = 0; %i != UIScene.getCount(); %i++ ) {
+		%t = UIScene.getObject( %i );
+		%t.setVisible( false );
+	}
+
+	%fin = new ImageFont() {
+		image = "gameModule:font";
+		Text = "GAME OVER";
+		FontSize = "10";
+		Position = "0 0";
+		SceneLayer = "0";
+		BlendColor = "255, 0, 0";
+		TextAlignment = "center";
+		LifeTime = 10;
+	};
+	UIScene.add( %fin );
 }
 
 function saveGame() {

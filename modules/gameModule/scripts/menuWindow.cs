@@ -65,7 +65,7 @@ function MenuBox::textTimer( %this ) {
 				%text = "3. Change systems";
 			case 3:
 				%text = "4. Lift off";
-				if ( Mothership.fuel < 4 ) {
+				if ( Mothership.fuel < 4 || GameScene.hasMotherPart ) {
 					%alpha = 0.5;
 				}
 			case 4:
@@ -116,6 +116,16 @@ function MenuBox::system( %this ) {
 }
 
 function MenuBox::liftOff( %this ) {
+	if ( Mothership.fuel < 4 ) {
+		return;
+	}
+
+	if ( GameScene.hasMotherPart ) {
+		return;
+	}
+
+	Mothership.fuel = 0;
+
 	saveGame();
 	
 	createOverworld();

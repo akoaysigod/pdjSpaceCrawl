@@ -42,7 +42,7 @@ function createPlayerUI() {
 	%fuel = new Sprite( FuelBar ) {
 		image = "gameModule:fuelBar";
 		size = "0 1.5";
-		position = "-45 29";
+		position = "-44 29";
 		SceneLayer = 0;
 		angle = 90;
 	};
@@ -53,7 +53,7 @@ function createPlayerUI() {
 	%fuelBack = new Sprite() {
 		image = "gameModule:healthGraphic";
 		size = "12 2.5";
-		position = "-45 29";
+		position = "-44 29";
 		SceneLayer = 1;
 		angle = 90;
 	};
@@ -63,13 +63,92 @@ function createPlayerUI() {
 		image = "gameModule:font";
 		FontSize = "2";
 		text = "FUEL";
-		position = "-45 21";
+		position = "-44 21";
 		SceneLayer = 0;
 	};
 	%playerUI.add( %fuelLabel );
 
+	%mother = new Sprite( MotherHealth ) {
+		image = "gameModule:healthBar";
+		size = "11.3 1.5";
+		position = "-44 13";
+		SceneLayer = 0;
+		angle = 90;
+	};
+	%mother.start = 13;
+	%mother.maxSize = "11.3";
+	%playerUI.add( %mother );
+
+	%motherBack = new Sprite() {
+		image = "gameModule:healthGraphic";
+		size = "12 2.5";
+		position = "-44 13";
+		SceneLayer = 1;
+		angle = 90;
+	};
+	%playerUI.add( %motherBack );
+
+	%motherLabel = new ImageFont() {
+		image = "gameModule:font";
+		FontSize = "2";
+		text = "ARMOR";
+		position = "-44 6";
+		SceneLayer = 0;
+	};
+	%playerUI.add( %motherLabel );
+
 	%playerUIWindow.setScene( %playerUI );
 	Canvas.add( %playerUIWindow );
+}
+
+function MotherHealth::flasher( %this ) {
+	if ( Alert.getVisible() ) {
+		Alert.setVisible( false );
+	} else {
+		Alert.setVisible( true );
+	}
+	%this.flasher = %this.schedule( 1000, flasher );
+}
+
+function MotherHealth::setupAlert( %this ) {
+	%test = new ImageFont( Alert )  {
+		image = "gameModule:font";
+		Text = "Mothership under attack!";
+		FontSize = "3";
+		Position = "0 33";
+		SceneLayer = "0";
+		BlendColor = "255, 0, 0";
+		TextAlignment = "center";
+		LifeTime = 10;
+	};
+	UIScene.add( %test );
+	%this.flasher = %this.schedule( 1000, flasher );
+}
+
+function MotherHealth::updateHealth( %this, %change ) {
+	if ( %change == -1000 ) {
+		Mothership.health = Mothership.health;
+	} else {
+		Mothership.health = Mothership.health - %change;
+	}
+
+	if ( Mothership.health <= 0 ) {
+		gameOver();
+		return;
+	}
+	
+	%currentHealth = Mothership.health;
+	%size = %currentHealth / 100;
+	%sizeX = %size * %this.maxSize;
+
+	if ( %change == 0 ) {
+		%sizeX = %this.maxSize;
+	}
+
+	%y = %this.start - ( ( %this.maxSize  - %sizeX ) / 2 );
+
+	%this.setPositionY( %y );
+	%this.setSizeX( %sizeX );
 }
 
 function HealthBar::updateHealth( %this, %change ) {
@@ -78,6 +157,7 @@ function HealthBar::updateHealth( %this, %change ) {
 	} else {
 		Ship.health = Ship.health - %change;
 	}
+	
 	%currentHealth = Ship.health;
 	%size = %currentHealth / 100;
 	%sizeX = %size * %this.maxSize;

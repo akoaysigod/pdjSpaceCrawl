@@ -179,7 +179,7 @@ function Enemy::onUpdate( %this ) {
 
 	if ( %this.following && !%this.isTimerActive() ) {
 		%this.startTimer( fireShot, %this.fireRate, 0 );
-	} else if ( %this.following && %dist > 20 && %dist < 30 ) {
+	} else if ( %this.following && %dist > 30 ) {
 		%this.stopTimer();
 	} 
 }

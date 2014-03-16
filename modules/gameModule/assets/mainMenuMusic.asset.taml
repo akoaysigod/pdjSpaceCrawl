@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="mainMenuMusic"
+	AudioFile="mainMenuMusic.wav"
+	Streaming=false
+	Looping=true
+	VolumeChannel=1
+/>

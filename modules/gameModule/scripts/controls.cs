@@ -33,6 +33,8 @@ function ShipControls::onBehaviorAdd( %this ) {
  	%this.isAccel = false;
  	%this.forward = false;
  	%this.backward = false;
+
+ 	%this.engineSound = -1;
 }
 
 function ShipControls::onBehaviorRemove( %this ) {
@@ -140,6 +142,9 @@ function ShipControls::reverseThrust( %this, %val ) {
 		%this.backward = false;
 		%this.isAccel = false;
 		%this.stopThrust();
+
+		alxStop( %this.engineSound );
+
 		return;
 	}
 
@@ -185,6 +190,10 @@ function ShipControls::reverseThrust( %this, %val ) {
 		}
 	}
 	
+	if ( !alxIsPlaying( %this.engineSound ) ) {
+		%this.engineSound = alxPlay( "gameModule:engineSound" );
+	}
+
 	%this.owner.applyLinearImpulse( %thrustVector, "0 0" );
 	
 	if ( %this.owner.isStaticFrameProvider() ) {
@@ -202,6 +211,9 @@ function ShipControls::accelerate( %this, %val ) {
 		%this.forward = false;
 		%this.isAccel = false;
 		%this.stopThrust();
+
+		alxStop( %this.engineSound );
+
 		return;
 	}
 
@@ -247,6 +259,10 @@ function ShipControls::accelerate( %this, %val ) {
 		}
 	}
 	
+	if ( !alxIsPlaying( %this.engineSound ) ) {
+		%this.engineSound = alxPlay( "gameModule:engineSound" );
+	}
+
 	%this.owner.applyLinearImpulse( %thrustVector, "0 0" );
 	
 	if ( %this.owner.isStaticFrameProvider() ) {
@@ -340,6 +356,8 @@ function ShipControls::bulletTimer( %this ) {
 	%bullet.Position = %this.owner.getPosition();
 	
 	%bullet.setLinearVelocity( %shootDir );	
+
+	alxPlay( "gameModule:laserSound" );
 }
 		
 function ShipControls::shoot( %this, %val ) {

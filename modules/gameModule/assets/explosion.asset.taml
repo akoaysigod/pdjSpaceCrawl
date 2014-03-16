@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="explosion"
+	AudioFile="explosion.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

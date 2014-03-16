@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="engineSound"
+	AudioFile="engine.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

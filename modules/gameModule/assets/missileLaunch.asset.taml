@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="missileLaunch"
+	AudioFile="missileLaunch.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

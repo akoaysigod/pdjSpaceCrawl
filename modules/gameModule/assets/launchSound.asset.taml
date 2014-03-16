@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="launchSound"
+	AudioFile="launchSound.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

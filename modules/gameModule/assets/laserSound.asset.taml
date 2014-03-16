@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="laserSound"
+	AudioFile="laser.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

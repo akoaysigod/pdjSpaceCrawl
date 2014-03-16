@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="enemyLaserSound"
+	AudioFile="enemyLaserSound.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

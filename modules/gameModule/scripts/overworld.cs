@@ -33,9 +33,9 @@ function createOverworld() {
 	}
 
 	Window.planetID += 1;
-	Window.useObjectInputEvents = true;
+	Window.setUseObjectInputEvents( true );
 	Window.dismount();
-	Window.setCameraPosition( 0, 0 );
+	Window.setCameraPosition( 50, 37.5 );
 	Window.setScene( %overworld );
 }
 
@@ -67,12 +67,18 @@ function Circles::createPlanets( %this ) {
 		%posX = %x * 10;
 		%posY = %y * 10;
 
-		if ( %x % 2 == 0 ) {
-			%posX -= getRandom( 1, 3 );
-		} else {
-			%posX += getRandom( 1, 3 );
+		%rX = getRandom( 1, 3 );
+		if ( getRandom( 0, 1 ) ) {
+			%rX *= -1;
+		}
+		%rY = getRandom( 1, 3 );
+		if ( getRandom( 0, 1 ) ) {
+			%rY *= -1;
 		}
 
+		%posX -= %rX;
+		%posX += %rY;
+		
 		%planet = new Sprite() {
 			class = "Planet";
 			image = %type;
@@ -105,6 +111,8 @@ function Circles::createPlanets( %this ) {
 }
 
 function Planet::onTouchEnter( %this, %touchID, %pos ) {
+	alxPlay( "gameModule:beep" );
+
 	if ( %this.getBlendAlpha() != 1.0 ) {
 		return;
 	}
@@ -125,6 +133,8 @@ function Planet::onTouchLeave( %this, %touchID, %pos ) {
 }
 
 function Planet::onTouchUp( %this, %touchID, %pos ) {
+	alxPlay( "gameModule:highBeep" );
+	
 	if ( %this.getBlendAlpha() != 1.0 ) {
 		return;
 	}

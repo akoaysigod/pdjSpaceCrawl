@@ -4,13 +4,15 @@ function GameModule::create( %this ) {
 	exec( "./scripts/gameScene.cs" );
 	exec( "./scripts/genWorld.cs" );
 	exec( "./scripts/controls.cs" );
+	exec( "./scripts/mainMenu.cs" );
 
 	createSceneWindow();
-	createScene();
-	Window.setScene( GameScene );
+	createMainMenu();
+	//createScene();
+	//Window.setScene( GameScene );
 
-	Window.planetID = 0;
-	createWorld();
+	//Window.planetID = 0;
+	//createWorld();
 	
 	setRandomSeed( getRealTime() );  
 	
@@ -18,6 +20,7 @@ function GameModule::create( %this ) {
 }
 
 function GameModule::destroy( %this ) {
+	alxStopAll();
 	destroySceneWindow();
 }
 
@@ -121,6 +124,8 @@ function gameOver() {
 }
 
 function saveGame() {
+	Ship.planetID = Window.planetID;
+	
 	TamlWrite( Mothership, "modules/saveFiles/mothership.taml" );
 	TamlWrite( Ship, "modules/saveFiles/playerShip.taml" );
 }

@@ -3,6 +3,10 @@ function createSpaceShip() {
 	exec( "./menuWindow.cs" );
 	exec( "./shields.cs" );
 
+	if ( isObject( Ship ) ) {
+			Ship.delete();
+	}
+
 	if ( Window.planetID == 0 ) {
 		%spaceship = TamlRead( "modules/defaultFiles/playerShip.taml");
 		%spaceship.hasGameOver = false;
@@ -11,6 +15,7 @@ function createSpaceShip() {
 		%spaceship.hasBoosters = false;
 		%spceship.hasReverseThruster = false;
 		%spaceship.hasSpecial = false;
+		%spaceship.planetID = 0;
 	} else {
 		%spaceship = TamlRead( "modules/saveFiles/playerShip.taml" );
 	}

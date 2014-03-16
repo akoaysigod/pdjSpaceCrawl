@@ -185,6 +185,8 @@ function MenuBox::liftOff( %this ) {
 }
 
 function MenuBox::jettison( %this ) {
+	alxPlay( "gameModule:launchSound" );
+
 	unpause();
 	schedule( 10, 0, deleteMenuBox );
 }

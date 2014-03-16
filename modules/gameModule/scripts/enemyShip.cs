@@ -131,14 +131,24 @@ function Enemy::fireShot( %this ) {
 	GameScene.add( %bullet );
 
 	%bullet.setLinearVelocity( %shootVel );
+
+	alxPlay( "gameModule:enemyLaserSound" );
 } 
 
 function Enemy::takeDamage( %this, %damage ) {
 	%this.health -= %damage;
 	echo( %this.health );
 	if ( %this.health <= 0 ) {
-		%this.safeDelete();
+		alxPlay( "gameModule:explosion" );
 		MoneyLabel.updateMoney( %this.value );
+
+		%explosion = new ParticlePlayer();
+		%explosion.Particle = "gameModule:impactExplosion";
+		%explosion.position = %this.getPosition();
+		%explosion.setSizeScale( 1 );
+		GameScene.add( %explosion );
+
+		%this.safeDelete();
 	}
 }
 

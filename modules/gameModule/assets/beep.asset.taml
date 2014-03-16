@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="beep"
+	AudioFile="beep.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

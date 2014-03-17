@@ -23,7 +23,7 @@ The level generation is using automata under a certain rule set. If you google i
 <b>Credits:</b><br>
 I haven't finalized the very inconsistent and random art work I've found on the internet because I can't draw. Once I do I'll provide names/links to all of it. Most of it thus far was found on [OpenGameArt](opengameart.org). 
 
-Music and sound effects are by Matt Kuhn and myself. 
+Music and sound effects are by [Solar Jetmen](solarjetmen.com). 
 
 Thanks for playing!
 

@@ -12,8 +12,10 @@ function createMothership() {
 	} else {
 		%mothership = TamlRead( "modules/saveFiles/mothership.taml");
 	}
-	%mothership.fuel = 0;
+	%mothership.fuel = 4;
 	%mothership.attackMusic = -1;
+
+	GameScene.hasMOtherPart = false;
 
 	return %mothership;
 }
@@ -72,28 +74,28 @@ function DropBox::onCollision( %this, %collides, %details ) {
 			Ship.hasShields = true;
 			alxPlay( "gameModule:typing" );
 
-		case "shipPartOne":
+		case "partOneItem":
 			messageWindowCreate( %collides.text );
 			%collides.safeDelete();
 			Mothership.hasUpgradeOne = true;
 			GameScene.hasMotherPart = false;
 			alxPlay( "gameModule:typing" );
 
-		case "shipPartTwo":
+		case "partTwoItem":
 			messageWindowCreate( %collides.text );
 			%collides.safeDelete();
 			Mothership.hasUpgradeTwo = true;
 			GameScene.hasMotherPart = false;
 			alxPlay( "gameModule:typing" );
 
-		case "shipPartThree":
+		case "partThreeItem":
 			messageWindowCreate( %collides.text );
 			%collides.safeDelete();
 			Mothership.hasUpgradeThree = true;
 			GameScene.hasMotherPart = false;
 			alxPlay( "gameModule:typing" );
 
-		case "shipPartFour":
+		case "partFourItem":
 			messageWindowCreate( %collides.text );
 			%collides.safeDelete();
 			Mothership.hasUpgradeFour = true;

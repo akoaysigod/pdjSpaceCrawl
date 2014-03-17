@@ -9,6 +9,7 @@
     CollisionCallback="1"
     Image="@asset=gameModule:mothership"
     Frame="0"
+    attackMusic="-1"
     fuel="0"
     hadMoveTo="0"
     hasTimer="0"
@@ -16,9 +17,9 @@
     hasUpgradeOne="0"
     hasUpgradeThree="0"
     hasUpgradeTwo="0"
-    health="98.200003"
+    health="100"
     isUpdating="0"
-    money="40"
+    money="0"
     pauseAng="0"
     pauseVel="0 0">
     <Sprite.CollisionShapes>

@@ -1,6 +1,6 @@
 A game for [Procedural Death Jam](http://proceduraldeathjam.com). It's a space game with randomly generated levels based off of a game I played as a child called Solar Jetman.
 
-~~I have no idea if I'll finish by Sunday.~~ Almost finished!
+~~I have no idea if I'll finish by Sunday.~~ ~~Almost finished!~~ Finished but I read the rules wrong and missed the deadline by 2 hours. =( fml. 
 
 <b>Compile:</b><br>
 To run you'll need the [Torque2D](https://github.com/GarageGames/Torque2D). For Windows/Mac there are projects for VS/XCode set up already. For Linux, I haven't tested it. Sorry if you're a Linux user but if I have time I'll figure it out and add the appropriate files. 

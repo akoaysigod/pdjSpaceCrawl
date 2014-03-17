@@ -12,10 +12,8 @@ function createMothership() {
 	} else {
 		%mothership = TamlRead( "modules/saveFiles/mothership.taml");
 	}
-	%mothership.fuel = 4;
+	%mothership.fuel = 0;
 	%mothership.attackMusic = -1;
-
-	GameScene.hasMOtherPart = false;
 
 	return %mothership;
 }

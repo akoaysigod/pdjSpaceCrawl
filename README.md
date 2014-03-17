@@ -24,6 +24,8 @@ I decided on Torque2D for this because there was only a week. It's easy to code 
 
 The level generation is using automata under a certain rule set. If you google it you'll find very nice looking caves generated using a very similar, if not identical algorithm. I have no idea what I did differently from those people but even on the same scale this looks mostly like someone who played a very bad game of Tetris. 
 
+I had a lot of grand ideas that I wanted to implement and started chopping off whole systems as the deadline approached. I also took A LOT of shortcuts towards the end. This code is a disaster so please don't think I always code like this. I know it's a mess. 
+
 <b>Credits:</b><br>
 I haven't finalized the very inconsistent and random art work I've found on the internet because I can't draw. Once I do I'll provide names/links to all of it. Most of it thus far was found on [OpenGameArt](opengameart.org). 
 

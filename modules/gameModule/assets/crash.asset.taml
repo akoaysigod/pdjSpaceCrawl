@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="crash"
+	AudioFile="crash.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

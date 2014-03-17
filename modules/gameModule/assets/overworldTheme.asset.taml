@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="overworldTheme"
+	AudioFile="overworldTheme.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=1
+/>

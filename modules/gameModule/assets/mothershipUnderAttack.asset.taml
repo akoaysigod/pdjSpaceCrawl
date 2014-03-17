@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="mothershipUnderAttack"
+	AudioFile="mothershipUnderAttack.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=1
+/>

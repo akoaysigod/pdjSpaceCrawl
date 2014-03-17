@@ -13,6 +13,7 @@ function createMothership() {
 		%mothership = TamlRead( "modules/saveFiles/mothership.taml");
 	}
 	%mothership.fuel = 0;
+	%mothership.attackMusic = -1;
 
 	return %mothership;
 }
@@ -43,6 +44,12 @@ function Mothership::takeDamage( %this, %dmg ) {
 	if ( !isObject( Alert ) ) {
 		MotherHealth.setupAlert();
 	}
+
+	if ( !alxIsPlaying( %this.attackMusic ) ) {
+		alxStopAll();
+		%this.attackMusic = alxPlay( "gameModule:mothershipUnderAttack" );
+	}
+	
 }
 
 function DropBox::onCollision( %this, %collides, %details ) {
@@ -57,35 +64,59 @@ function DropBox::onCollision( %this, %collides, %details ) {
 			%collides.safeDelete();
 			Mothership.fuel += 1;
 			FuelBar.updateFuel();
+			alxPlay( "gameModule:typing" );
 
 		case "shieldItem":
 			messageWindowCreate( %collides.text );
 			%collides.safeDelete();
 			Ship.hasShields = true;
+			alxPlay( "gameModule:typing" );
 
 		case "shipPartOne":
 			messageWindowCreate( %collides.text );
 			%collides.safeDelete();
 			Mothership.hasUpgradeOne = true;
 			GameScene.hasMotherPart = false;
+			alxPlay( "gameModule:typing" );
 
 		case "shipPartTwo":
 			messageWindowCreate( %collides.text );
 			%collides.safeDelete();
 			Mothership.hasUpgradeTwo = true;
 			GameScene.hasMotherPart = false;
+			alxPlay( "gameModule:typing" );
 
 		case "shipPartThree":
 			messageWindowCreate( %collides.text );
 			%collides.safeDelete();
 			Mothership.hasUpgradeThree = true;
 			GameScene.hasMotherPart = false;
+			alxPlay( "gameModule:typing" );
 
 		case "shipPartFour":
 			messageWindowCreate( %collides.text );
 			%collides.safeDelete();
 			Mothership.hasUpgradeFour = true;
 			GameScene.hasMotherPart = false;
+			alxPlay( "gameModule:typing" );
+
+		case "reverseThrusters":
+			messageWindowCreate( %collides.text );
+			%collides.safeDelete();
+			Ship.hasReverseThrusters = true;
+			alxPlay( "gameModule:typing" );
+
+		case "missiles":
+			messageWindowCreate( %collides.text );
+			%collides.safeDelete();
+			Ship.hasSpecial = true;
+			alxPlay( "gameModule:typing" );
+
+		case "boosters":
+			messageWindowCreate( %collides.text );
+			%collides.safeDelete();
+			Ship.hasBoosters = true;
+			alxPlay( "gameModule:typing" );
 	}
 }
 
@@ -95,37 +126,3 @@ function Mothership::onCollision( %this, %collides, %details ) {
 		%collides.safeDelete();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-	%mothership = new Sprite( Mothership );
-	%mothership.name = "mothership";
-	%mothership.Image = "gameModule:mothership";
-	%mothership.SceneLayer = 0;
-	%mothership.setBodyType( static );
-	%mothership.createEdgeCollisionShape( -15, -12.5, 15, -12.5 );
-	%mothership.createEdgeCollisionShape( -15, -12.5, -15, 4.5 );
-	%mothership.createEdgeCollisionShape( 15, -12.5, 15, 4.5 );
-	%mothership.createEdgeCollisionShape( -15, 4.5, -9, 12.5 );
-	%mothership.createEdgeCollisionShape( 15, 4.5, 9, 12.5 );
-	
-	%mothership.setDefaultRestitution( 0.5 );
-	%mothership.setSceneGroup( 1 );
-	%mothership.setCollisionGroups( 1, 13 );
-	%mothership.setCollisionLayers( 1, 13 );
-	%mothership.setCollisionCallback( true );
-	%mothership.Size = "30 25";
-
-	%mothership.fuel = 0;
-*/

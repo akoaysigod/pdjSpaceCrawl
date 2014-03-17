@@ -319,10 +319,16 @@ function ShipControls::stopThrust( %this ) {
 
 function Bullet::onCollision( %this, %collides, %collisionDetails ) {
 	%collides.setLinearVelocity( "0 0" );
-
+	echo( %collides.name );
 	if ( %collides.name $= "enemy" ) {
 		%collides.takeDamage( %this.damage );
+		alxPlay( "gameModule:missileHit" );
 	} 
+
+	if ( %collides.name $= "stationGun" ) {
+		%collides.takeDamage( %this.damage );
+		alxPlay( "gameModule:missileHit" );
+	}
 
 	if ( %collides.name $= "border" ) {
 		%this.safeDelete();
@@ -342,7 +348,7 @@ function ShipControls::bulletTimer( %this ) {
 	%bullet.setBodyType( dynamic );
 	%bullet.setCollisionCallback( true );
 	%bullet.createPolygonBoxCollisionShape();
-	%bullet.setCollisionGroups( 1, 10, 11, 12 );
+	%bullet.setCollisionGroups( 1, 10, 11, 12, 20 );
 	%bullet.setSceneLayer( 2 );
 	%bullet.setLifetime( 10.0 );
 

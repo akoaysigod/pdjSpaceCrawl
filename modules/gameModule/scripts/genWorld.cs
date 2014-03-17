@@ -17,11 +17,8 @@ function createWorld() {
 	%test = new LevelGen( GenLevel );
 	%test.initLevel( $width, $height, 35 );
 	%test.automata( 6, 3, 20 );
-	%test.automata( 5, 5, 2 );
+	%test.automata( 5, 5, 1 );
 	%test.finish();
-	//genLand();
-	//auto( 6, 3, 20 );
-	//auto( 5, 5, 1 );
 	%test.genSprites();	
 	%test.placeItems();
 	%test.genEnemies();
@@ -225,26 +222,25 @@ function GenLevel::placeItems( %this ) {
 						%part.positon = %xPos SPC %yPos;
 						GameScene.add( %part );
 					}
-				}
-
-				if ( !%hasPlacedSpecial ) {
-					if ( !%this.quadChooser( %specialQuad ) ) {
-						%xPos += %moveX;
-						continue;
-					}
-
-					if ( %chance > 95 ) {
-						%hasPlacedSpecial = true;
-
-						if ( !Ship.hasReverseThruster ) {
-							%special = createItem( "reverseThrusters" );
-						} else if ( !Ship.hasSpecial ) {
-							%special = createItem( "missiles" );
-						} else if ( !Ship.hasBoosters ) {
-							%special = createItem( "boosters" );
+					if ( !%hasPlacedSpecial ) {
+						if ( !%this.quadChooser( %specialQuad ) ) {
+							%xPos += %moveX;
+							continue;
 						}
-						%special.position = %xPos SPC %yPos;
-						GameScene.add( %special );
+
+						if ( %chance > 95 ) {
+							%hasPlacedSpecial = true;
+
+							if ( !Ship.hasReverseThruster ) {
+								%special = createItem( "reverseThrusters" );
+							} else if ( !Ship.hasSpecial ) {
+								%special = createItem( "missiles" );
+							} else if ( !Ship.hasBoosters ) {
+								%special = createItem( "boosters" );
+							}
+							%special.position = %xPos SPC %yPos;
+							GameScene.add( %special );
+						}
 					}
 				}
 			}
@@ -330,121 +326,8 @@ function placeMothership() {
 	
 	Window.mount( Ship, 0, 0, 10, true, false );
 	Window.setViewLimitOn( 0, 0, $width * $scaleFactor, ( $height * $scaleFactor ) + 75);
+
+	alxPlay( "gameModule:gameMusic" );
 }
 
 
-
-
-
-
-
-
-
-
-	
-/*
-//old slow level generation 
-
-function genLand() {
-	$width = 100;
-	$height = 100;
-	$map[$height, $width] = 1;
-	
-	%live = 50;
-
-	for ( %i = 0; %i != $height; %i++ ) {
-		for ( %k = 0; %k != $width; %k++ ) {
-			if ( getRandom( 1, 100 ) < %live ) {
-				$map[%i, %k] = 1;
-			} else {	
-				$map[%i, %k] = 0;
-			}
-		}
-	}
-}
-
-function auto( %birth, %survive, %iterations ) {
-	for ( %j = 0; %j != %iterations; %j++ ) {
-		for ( %i = 1; %i != $height; %i++ ) {
-			for ( %k = 1; %k != $width; %k++ ) { 
-				%living = alive( %i, %k );
-				if ( $map[%i, %k] == 1 ) {
-					if ( %living < %survive ) {
-						$mapTwo[%i, %k] = 0;
-					} else { 
-						$mapTwo[%i, %k] = 1;	
-					}
-				} else {
-					if ( %living > %birth ) {
-						$mapTwo[%i, %k] = 1;
-					} else {
-						$mapTwo[%i, %k] = 0;
-					}	
-				}
-			}
-		}
-		mapToMap();
-	}
-}
-
-function mapToMap() {
-	for ( %i = 1; %i != $height; %i++ ) {
-		for ( %k = 1; %k != $width; %k++ ) {
-			$map[%i, %k] = $mapTwo[%i, %k];
-		}
-	}
-}
-
-function alive( %x, %y ) {
-	%ret = 0;
-	%ret += $map[%x + 1, %y];
-	%ret += $map[%x + 1, %y - 1];
-	%ret += $map[%x + 1, %y + 1];
-	%ret += $map[%x - 1, %y];
-	%ret += $map[%x - 1, %y + 1];
-	%ret += $map[%x - 1, %y - 1];
-	%ret += $map[%x, %y + 1];
-	%ret += $map[ %x, %y - 1];
-	return %ret;
-}
-
-function genSprites() {
-	%x = -100;
-	%xStart = %x;
-	%y = 0;
-	%blockSize = 2;
-	%size = %blockSize SPC %blockSize;
-	%moveX = %blockSize;
-	%moveY = %blockSize;
-	%simulate = 1;
-	
-	for ( %i = 0; %i != $height; %i++ ) {
-		for ( %k = 0; %k != $width; %k++ ) {
-			if ( $map[%i, %k] == 1 && alive( %i, %k ) <= 1 ) {
-				$map[%i, %k] = 0;
-			} else if ( $map[%i, %k] == 1 ) {
-				%block = new Sprite();
-				%block.Image = "gameModule:rockText";
-				%block.setSceneGroup( 10 );
-				%block.setCollisionGroups( 10 );
-				%block.setCollisionLayers( 10 );
-				%block.Size = %size;
-				%block.Position = %x SPC %y;
-				%block.SceneLayer = 1;
-				
-				if ( %simulate && alive( %i, %k ) >= 2 ) {
-					%block.setBodyType( static );
-					%block.createPolygonBoxCollisionShape( %size );
-					%block.setDefaultRestitution( 0.5 );
-				}
-				
-				GameScene.add( %block );
-			}
-			%x += %moveX;	
-		}
-		%x = %xStart;
-		%y += %moveY;
-	}
-}
-*/
-	

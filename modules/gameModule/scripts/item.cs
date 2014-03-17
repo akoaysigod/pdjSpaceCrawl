@@ -26,13 +26,13 @@ function createItem( %itemType ) {
 			%item.name = "partTwoItem";
 			%item.size = "5 6";
 			%item.weight = "0 -2";
-			%item.text = "You found a piece of the Mothership. This one adds direct combat systems.";
+			%item.text = "You found a piece of the Mothership. This is an orbital repair unit. It'll allow you to repair some damage while travelling between planets.";
 
 		case "shipPartThree":
 			%item.name = "partThreeItem";
 			%item.size = "5 6";
 			%item.weight = "0 -2";
-			%item.text = "The manufacturing bay allows the Mothership to create ammo.";
+			%item.text = "The manufacturing bay allows the Mothership to create ammo for free.";
 
 		case "shipPartFour":
 			%item.name = "partFourItem";
@@ -42,9 +42,24 @@ function createItem( %itemType ) {
 
 		case "reverseThrusters":
 			%item.name = "reverseThrusters";
+			%item.image = "gameModule:shields";
 			%item.size = "5 5";
 			%item.weight = "0 -2.5";
 			%item.text = "The reverse thrusters allow you to slow down in low gravity situations. Press the S key to use.";
+
+		case "missiles":
+			%item.name = "missiles";
+			%item.image = "gameModule:shields";
+			%item.size = "5 5";
+			%item.weight = "0 -1";
+			%item.text = "You have found missiles. You may no manufacture ammo in the Mothership. Press E to shoot.";
+
+		case "boosters":
+			%item.name = "boosters";
+			%item.image = "gameModule:shields";
+			%item.size = "5 5";
+			%item.weight = "0 -2";
+			%item.text = "These boosters will help you carry back heavy stuff or give you a quick boost to get going. Press R to use boosters";
 	}
 
 	%item.text = %item.text SPC  "Press ENTER to continue. ";

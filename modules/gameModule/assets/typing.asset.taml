@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="typing"
+	AudioFile="typing.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

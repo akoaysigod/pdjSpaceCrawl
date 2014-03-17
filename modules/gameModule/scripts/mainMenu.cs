@@ -33,8 +33,8 @@ function createMainMenu() {
 	$musicChannel = 1;
 	$sfxChannel = 2;
 
-	alxSetChannelVolume( $musicChannel, 0.75 );
-	alxSetChannelVolume( $sfxChannel, 1.0 );
+	alxSetChannelVolume( $musicChannel, 0.65 );
+	alxSetChannelVolume( $sfxChannel, 0.9 );
 
 	%spaceship = TamlRead( "modules/saveFiles/playerShip.taml" );
 	Window.planetID = %spaceship.planetID;

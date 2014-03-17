@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="gameMusic"
+	AudioFile="gameMusic.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=1
+/>

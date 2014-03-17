@@ -10,8 +10,6 @@ function GameModule::create( %this ) {
 	createMainMenu();
 
 	setRandomSeed( getRealTime() );  
-	
-	//GameScene.setDebugOn( "collision", "position", "aabb" );
 }
 
 function GameModule::destroy( %this ) {

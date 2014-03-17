@@ -32,6 +32,9 @@ function createMenuWindow() {
 	%tmpWindow.setScene( %tmpScene );
 
 	%background.textTimer();
+
+	alxStopAll();
+	alxPlay( "gameModule:gameMusic" );
 }
 
 function Character::typeText( %this ) {
@@ -125,7 +128,7 @@ function MenuBox::setupControls( %this ) {
 
 function MenuBox::repair( %this ) {
 	%cost = mCeil( 100 - Ship.health );
-	echo( "wtf" );
+
 	if ( Mothership.money > %cost ) {
 		Ship.health = 100;
 		HealthBar.updateHealth( 0 );
@@ -163,12 +166,14 @@ function MenuBox::repairShip( %this ) {
 
 function MenuBox::weapon( %this ) {
 	%cost = 10 * ( 1 + Window.planetID );
-	if ( Mothership.money > %cost ) {
+	if ( Mothership.money > %cost || Mothership.hasUpgradeThree ) {
 		Ship.ammo += 1;
-		MoneyLabel.updateMoney( %cost * -1 );
-		AmmoLabel.updateAmmo();
+		if ( !Mothership.hasUpgradeThree ) {
+			MoneyLabel.updateMoney( %cost * -1 );
+			AmmoLabel.updateAmmo();
+		}
 
-		if ( Mothership.money < %cost ) {
+		if ( Mothership.money < %cost && !Mothership.hasUpgradeThree ) {
 			for ( %i = 0; %i != MenuScene.getCount(); %i++ ) {
 				%t = MenuScene.getObject( %i );
 				if ( %t.label $= "ammo" ){
@@ -183,7 +188,7 @@ function MenuBox::weapon( %this ) {
 }
 
 function MenuBox::liftOff( %this ) {
-	if ( Mothership.fuel < 4 ) {
+	if ( Mothership.fuel < 4 || ( Mothership.hasUpgradeFour && Mothership.fuel < 3 ) ) {
 		return;
 	}
 
@@ -203,6 +208,16 @@ function MenuBox::liftOff( %this ) {
 	}
 
 	alxPlay( "gameModule:highBeep" );
+
+	if ( Mothership.hasUpgradeTwo ) {
+		if ( Mothership.health < 75 ) {
+			Mothership.health = 75;
+		}
+
+		if ( Ship.health < 75 ) {
+			Ship.health = 75;
+		}
+	}
 
 	Mothership.fuel = 0;
 

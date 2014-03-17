@@ -93,6 +93,7 @@ function Enemy::attackMother( %this ) {
 }
 
 function BulletCall::onCollision( %this, %collides, %details ) {
+	echo( %collides.name );
 	if ( %collides.name $= "border" ) {
 		%this.safeDelete();
 	}
@@ -104,10 +105,10 @@ function Enemy::fireShot( %this ) {
 	%bullet.Image = "gameModule:enemyBullet";
 	%bullet.Size = "2 2";
 	%bullet.createCircleCollisionShape( 2 );
-	%bullet.setCollisionGroups( 30 );
-	%bullet.setCollisionLayers( 30 );
+	%bullet.setCollisionGroups( 20, 30 );
+	%bullet.setCollisionLayers( 20, 30 );
 	%bullet.setSceneGroup( 13 );
-	//%bullet.setLifeTime( 10 );
+	%bullet.setLifeTime( 600 );
 	%bullet.sceneLayer = 10;
 	//%bullet.setDefaultRestitution( 0.5 );
 	%bullet.Position = %this.getPosition();
@@ -138,7 +139,6 @@ function Enemy::fireShot( %this ) {
 
 function Enemy::takeDamage( %this, %damage ) {
 	%this.health -= %damage;
-	echo( %this.health );
 	if ( %this.health <= 0 ) {
 		alxPlay( "gameModule:explosion" );
 		MoneyLabel.updateMoney( %this.value );

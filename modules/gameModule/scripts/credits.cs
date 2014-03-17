@@ -61,11 +61,23 @@ function createCredits() {
 	%readme.setLinearVelocityY( %scrollSpeed );
 	%credits.add( %readme );
 
+	%AdrianRockefeller = new ImageFont() {
+		image = "gameModule:font";
+		Text = "Adrian Rockefeller";
+		FontSize = 3;
+		Position = "50 -40";
+		TextAlignment = "center";
+		LifeTime = 180;
+	};
+	%AdrianRockefeller.setBodyType( dynamic );
+	%AdrianRockefeller.setLinearVelocityY( %scrollSpeed );
+	%credits.add( %AdrianRockefeller );
+
 	%master484 = new ImageFont() {
 		image = "gameModule:font";
 		Text = "Master484";
 		FontSize = 3;
-		Position = "50 -40";
+		Position = "50 -45";
 		TextAlignment = "center";
 		LifeTime = 180;
 	};
@@ -77,7 +89,7 @@ function createCredits() {
 		image = "gameModule:font";
 		Text = "thomaswsp";
 		FontSize = 3;
-		Position = "50 -45";
+		Position = "50 -50";
 		TextAlignment = "center";
 		LifeTime = 180;
 	};
@@ -89,7 +101,7 @@ function createCredits() {
 		image = "gameModule:font";
 		Text = "Jannax";
 		FontSize = 3;
-		Position = "50 -50";
+		Position = "50 -55";
 		TextAlignment = "center";
 		LifeTime = 180;
 	};
@@ -101,7 +113,7 @@ function createCredits() {
 		image = "gameModule:font";
 		Text = "CharlesGabriel";
 		FontSize = 3;
-		Position = "50 -55";
+		Position = "50 -60";
 		TextAlignment = "center";
 		LifeTime = 180;
 	};
@@ -113,25 +125,13 @@ function createCredits() {
 		image = "gameModule:font";
 		Text = "manenwolf";
 		FontSize = 3;
-		Position = "50 -60";
+		Position = "50 -65";
 		TextAlignment = "center";
 		LifeTime = 180;
 	};
 	%manenwolf.setBodyType( dynamic );
 	%manenwolf.setLinearVelocityY( %scrollSpeed );
 	%credits.add( %manenwolf );
-
-	%JustinNichol = new ImageFont() {
-		image = "gameModule:font";
-		Text = "Justin Nichol";
-		FontSize = 3;
-		Position = "50 -65";
-		TextAlignment = "center";
-		LifeTime = 180;
-	};
-	%JustinNichol.setBodyType( dynamic );
-	%JustinNichol.setLinearVelocityY( %scrollSpeed );
-	%credits.add( %JustinNichol );
 
 	%JustinNichol = new ImageFont() {
 		image = "gameModule:font";
@@ -145,11 +145,23 @@ function createCredits() {
 	%JustinNichol.setLinearVelocityY( %scrollSpeed );
 	%credits.add( %JustinNichol );
 
+	%JustinNichol = new ImageFont() {
+		image = "gameModule:font";
+		Text = "Justin Nichol";
+		FontSize = 3;
+		Position = "50 -75";
+		TextAlignment = "center";
+		LifeTime = 180;
+	};
+	%JustinNichol.setBodyType( dynamic );
+	%JustinNichol.setLinearVelocityY( %scrollSpeed );
+	%credits.add( %JustinNichol );
+
 	%LordNeo = new ImageFont() {
 		image = "gameModule:font";
 		Text = "LordNeo";
 		FontSize = 3;
-		Position = "50 -75";
+		Position = "50 -80";
 		TextAlignment = "center";
 		LifeTime = 180;
 	};
@@ -161,7 +173,7 @@ function createCredits() {
 		image = "gameModule:font";
 		Text = "ac3raven";
 		FontSize = 3;
-		Position = "50 -80";
+		Position = "50 -85";
 		TextAlignment = "center";
 		LifeTime = 180;
 	};
@@ -173,7 +185,7 @@ function createCredits() {
 		image = "gameModule:font";
 		Text = "JustinCallaghan";
 		FontSize = 3;
-		Position = "50 -85";
+		Position = "50 -90";
 		TextAlignment = "center";
 		LifeTime = 180;
 	};
@@ -185,7 +197,7 @@ function createCredits() {
 		image = "gameModule:font";
 		text = "Music and Sound:";
 		FontSize = 5;
-		Position = "50 -95";
+		Position = "50 -100";
 		TextAlignment = "center";
 		LifeTime = 180;
 	};
@@ -196,11 +208,47 @@ function createCredits() {
 	%logo = new Sprite() {
 		image = "gameModule:logo";
 		size = "35 3";
-		position = "50 -103";
+		position = "50 -108";
 	};
 	%logo.setBodyType( dynamic );
 	%logo.setLinearVelocityY( %scrollSpeed );
 	%credits.add( %logo );
+
+	%bugFinders = new ImageFont() {
+		image = "gameModule:font";
+		text = "Found bugs:";
+		FontSize = 5;
+		Position = "50 -115";
+		TextAlignment = "center";
+		LifeTime = 180;
+	};
+	%bugFinders.setBodyType( dynamic );
+	%bugFinders.setLinearVelocityY( %scrollSpeed );
+	%credits.add( %bugFinders );
+
+	%AndrewRockefeller = new ImageFont() {
+		image = "gameModule:font";
+		text = "Andrew Rockefeller";
+		FontSize = 3;
+		Position = "50 -120";
+		TextAlignment = "center";
+		LifeTime = 180;
+	};
+	%AndrewRockefeller.setBodyType( dynamic );
+	%AndrewRockefeller.setLinearVelocityY( %scrollSpeed );
+	%credits.add( %AndrewRockefeller );
+
+	%MattKuhn = new ImageFont() {
+		image = "gameModule:font";
+		text = "Matt Kuhn";
+		FontSize = 3;
+		Position = "50 -125";
+		TextAlignment = "center";
+		LifeTime = 180;
+	};
+	%MattKuhn.setBodyType( dynamic );
+	%MattKuhn.setLinearVelocityY( %scrollSpeed );
+	%credits.add( %MattKuhn );
 
 
 

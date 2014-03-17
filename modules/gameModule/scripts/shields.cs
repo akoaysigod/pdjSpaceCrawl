@@ -43,5 +43,7 @@ function Shields::onCollision( %this, %collides, %details ) {
 		%collides.safeDelete();
 	}
 
+	alxplay( "gameModule:shieldDeflect" );
+
 	HealthBar.updateHealth( %change );
 }

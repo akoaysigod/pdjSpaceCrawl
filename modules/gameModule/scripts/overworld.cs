@@ -1,4 +1,6 @@
 function createOverworld() {
+	alxStopAll();
+
 	if ( Window.planetID == 0 ) {
 		%overworld = new Scene( OverworldScene );
 		%circles = new CircleGen( Circles );
@@ -37,6 +39,8 @@ function createOverworld() {
 	Window.dismount();
 	Window.setCameraPosition( 50, 37.5 );
 	Window.setScene( %overworld );
+
+	alxPlay( "gameModule:overworldTheme" );
 }
 
 function Circles::createPlanets( %this ) {
@@ -134,6 +138,8 @@ function Planet::onTouchLeave( %this, %touchID, %pos ) {
 
 function Planet::onTouchUp( %this, %touchID, %pos ) {
 	alxPlay( "gameModule:highBeep" );
+
+	alxStopAll();
 	
 	if ( %this.getBlendAlpha() != 1.0 ) {
 		return;

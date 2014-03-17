@@ -32,8 +32,10 @@ function Missile::onCollision( %this, %collides, %details ) {
 	if ( %collides.kind $= "enemy" ) {
 		%collides.takeDamage( %this.dmg );
 		%this.safeDelete();
+		alxPlay( "gameModule:missileHit" );
 	} else if ( %collides.name $= "border" ) {
 		%this.safeDelete();
+		alxPlay( "gameModule:missileHit" );
 	}
 }
 
@@ -57,7 +59,7 @@ function Ship::launchMissile( %this ) {
 	%missile.dmg = 100;
 	%missile.setCollisionCallback( true );
 	%missile.createPolygonBoxCollisionShape( 2, 5 );
-	%missile.setCollisionGroups( 11, 12 );
+	%missile.setCollisionGroups( 11, 12, 20 );
 	%missile.setUpdateCallback( true );
 
 	%adjustedAngle = %this.getAngle();
@@ -85,12 +87,14 @@ function Ship::onCollision( %this, %collides, %collisionDetails ) {
 	if ( %collides.name $= "enemyBullet" ) {
 		%change = %collides.damage;
 		%collides.safeDelete();
+		alxPlay( "gameModule:crash" );
 	} else if ( %collides.name $= "block" || %collides.name $= "mothership" ) {
 		%change = VectorLen( %this.getLinearVelocity() ) / 5;
 		%change = mFloor( %change );
 		if ( %change == 0 ) {
 			%change = 0.5;
 		}
+		alxPlay( "gameModule:crash" );
 	} else if ( %collides.name $= "dropbox" ) {
 		%this.openShipMenu();
 	}

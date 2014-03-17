@@ -1,8 +1,10 @@
 function createStationGun( %flip ) {
 	%gun = new Sprite( StationGun );
+	%gun.name = "stationGun";
 	%gun.Size = "5 5";
 	%gun.Image = "gameModule:stationGun";
 	%gun.setFixedAngle( true );
+	%gun.setBodyType( static );
 
 	if ( %flip == 6 ) {
 		%gun.setFlipY( true );
@@ -21,18 +23,27 @@ function createStationGun( %flip ) {
 	return %gun;
 }
 
+function StationGun::takeDamage( %this, %dmg ) {
+	%this.health -= %dmg; 
+	if ( %this.health <= 0 ) {
+		%this.stopTimer();
+		%this.safeDelete();
+	}
+}
+
 function StationGun::fireShot( %this ) {
 	%bullet = new Sprite( BulletCall );
 	%bullet.Name = "enemyBullet";
 	%bullet.Image = "gameModule:enemyBullet";
 	%bullet.Size = "2 2";
 	%bullet.createCircleCollisionShape( 2 );
-	%bullet.setCollisionGroups( 30 );
-	%bullet.setCollisionLayers( 30 );
+	%bullet.setCollisionGroups( 20, 30 );
+	%bullet.setCollisionLayers( 20, 30 );
 	%bullet.setSceneGroup( 13 );
 	%bullet.sceneLayer = 10;
 	%bullet.Position = %this.getPosition();
 	%bullet.setCollisionCallback( true );
+	%bullet.setLifeTime( 600 );
 
 	%bullet.damage = 3 + Window.planetID;
 
@@ -59,16 +70,16 @@ function StationGun::onUpdate( %this ) {
 	%y = getWord( Ship.getPosition(), 1 );
 
 	if ( !%this.getFlipY() ) {
-		if ( %y > getWord( %this.getPosition(), 1 ) ) {
-			if ( %dist < 30 && !%this.isTimerActive() ) {
+		if ( %y > getWord( %this.getPosition(), 1 ) && %dist < 40) {
+			if ( !%this.isTimerActive() ) {
 				%this.startTimer( fireShot, %this.fireRate, 0 );
 			}
 		} else {
 			%this.stopTimer();
 		}
 	} else if ( %this.getFlipY() ) {
-		if ( %y < getWord( %this.getPosition(), 1 ) ) {
-			if ( %dist < 30 && !%this.isTimerActive() ) {
+		if ( %y > getWord( %this.getPosition(), 1 ) && %dist < 40 ) {
+			if ( !%this.isTimerActive() ) {
 				%this.startTimer( fireShot, %this.fireRate, 0 );
 			}
 		} else {

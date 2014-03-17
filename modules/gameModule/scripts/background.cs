@@ -33,7 +33,7 @@ function createBackground() {
 	
 	%scrolling.add( %background, %midground, %foreground );
 
-	for ( %i = 0; %i != 24; %i++ ) {
+	for ( %i = 0; %i != 27; %i++ ) {
 		%back = new Sprite() {
 			name = "back";
 			size = "200 150";
@@ -68,6 +68,7 @@ function createBackground() {
 	setBackPositions();
 }
 
+//messed this up so bad =(
 function setBackPositions() {
 	%x = 100;
 	%y = 75;
@@ -77,21 +78,21 @@ function setBackPositions() {
 		if ( %i < 3 ) {
 			%tmp.position = %x + getRandom( 0, 5 ) SPC %y + getRandom( 0, 5 );
 		} else if ( %i >= 3 && %i < 6 ) {
-			%tmp.position = ( %x * 2 ) + getRandom( 0, 5 ) SPC %y - getRandom( 0, 5 );
+			%tmp.position = ( %x * 2 ) + 50 + getRandom( 0, 5 ) SPC %y + 75 - getRandom( 0, 5 );
 		} else if ( %i >= 6 && %i < 9 ) {
-			%tmp.position = ( %x * 3 ) + getRandom( 0, 5 ) SPC %y + getRandom( 0, 5 );
+			%tmp.position = ( %x * 3 ) + 50 + getRandom( 0, 5 ) SPC %y + 75 + getRandom( 0, 5 );
 		} else if ( %i >= 9 && %i < 12 ) {
 			%tmp.position = %x + getRandom( 0, 5 ) SPC ( %y * 2 ) - getRandom( 0, 5 );
 		} else if ( %i >= 12 && %i < 15 ) { 
-			%tmp.position = ( %x * 2 ) + getRandom( 0, 5 ) SPC ( %y * 2 ) + getRandom( 0, 5 );
+			%tmp.position = ( %x * 2 ) + 50 + getRandom( 0, 5 ) SPC ( %y * 2 ) + 75 + getRandom( 0, 5 );
 		} else if ( %i >= 15 && %i < 18 ) {
-			%tmp.position = ( %x * 3 ) + getRandom( 0, 5 ) SPC ( %y * 2 ) - getRandom( 0, 5 );
+			%tmp.position = ( %x * 3 ) + 50 + getRandom( 0, 5 ) SPC ( %y * 2 ) + 75 - getRandom( 0, 5 );
 		} else if ( %i >= 18 && %i < 21 ) {
 			%tmp.position = %x - getRandom( 0, 5 ) SPC ( %y * 3 ) + getRandom( 0, 5 );
 		} else if ( %i >= 21 && %i < 24 ) {
-			%tmp.position = ( %x * 2 ) - getRandom( 0, 5 ) SPC ( %y * 3 ) - getRandom( 0, 5 );
+			%tmp.position = ( %x * 2 ) + 50 - getRandom( 0, 5 ) SPC ( %y * 3 ) + 75 - getRandom( 0, 5 );
 		} else if ( %i >= 24 ) {
-			%tmp.position = ( %x * 3 ) - getRandom( 0, 5 ) SPC ( %y * 3 ) + getRandom( 0, 5 );
+			%tmp.position = ( %x * 3 ) + 50 - getRandom( 0, 5 ) SPC ( %y * 3 ) + 75 + getRandom( 0, 5 );
 		}
 		GameScene.add( %tmp );
 	}
@@ -103,7 +104,7 @@ function setLimits() {
 	%left.createEdgeCollisionShape( 0, 0, 0, 75 );
 	%left.position = 1 SPC $height * $scaleFactor;
 	%left.setBodyType( static );
-	%left.SceneGroup = 10;
+	%left.SceneGroup = 20;
 	GameScene.add( %left );
 	
 	%top = new SceneObject();
@@ -111,7 +112,7 @@ function setLimits() {
 	%top.createEdgeCollisionShape( 0, 0, ( $width * $scaleFactor ) - 1, 0 );
 	%top.position = 1 SPC ( $height * $scaleFactor ) + 75;
 	%top.setBodyType( static );
-	%top.SceneGroup = 10;
+	%top.SceneGroup = 20;
 	GameScene.add( %top );
 
 	%right = new SceneObject();
@@ -119,7 +120,7 @@ function setLimits() {
 	%right.createEdgeCollisionShape( 0, 0, 0, 75 );
 	%right.position = $width * $scaleFactor SPC $height * $scaleFactor;
 	%right.setBodyType( static );
-	%right.SceneGroup = 10;
+	%right.SceneGroup = 20;
 	GameScene.add( %right );
 }
 
@@ -137,11 +138,11 @@ function ParaBack::onUpdate( %this ) {
 
 		if ( %t.name $= "mid" ) {
 			if ( %xDir != 0 ) {
-				%t.setLinearVelocityX( %xDir / 4 );
+				%t.setLinearVelocityX( %xDir / 5 );
 			}
 
 			if ( %yDir != 0 ) {
-				%t.setLinearVelocityY( %yDir / 4 );
+				%t.setLinearVelocityY( %yDir / 5 );
 			}
 		}
 

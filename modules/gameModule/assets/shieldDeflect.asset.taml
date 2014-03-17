@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="shieldDeflect"
+	AudioFile="shieldDeflect.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=2
+/>

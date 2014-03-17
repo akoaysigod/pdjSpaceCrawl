@@ -103,6 +103,7 @@ function setLimits() {
 	%left.createEdgeCollisionShape( 0, 0, 0, 75 );
 	%left.position = 1 SPC $height * $scaleFactor;
 	%left.setBodyType( static );
+	%left.SceneGroup = 10;
 	GameScene.add( %left );
 	
 	%top = new SceneObject();
@@ -110,6 +111,7 @@ function setLimits() {
 	%top.createEdgeCollisionShape( 0, 0, ( $width * $scaleFactor ) - 1, 0 );
 	%top.position = 1 SPC ( $height * $scaleFactor ) + 75;
 	%top.setBodyType( static );
+	%top.SceneGroup = 10;
 	GameScene.add( %top );
 
 	%right = new SceneObject();
@@ -117,6 +119,7 @@ function setLimits() {
 	%right.createEdgeCollisionShape( 0, 0, 0, 75 );
 	%right.position = $width * $scaleFactor SPC $height * $scaleFactor;
 	%right.setBodyType( static );
+	%right.SceneGroup = 10;
 	GameScene.add( %right );
 }
 

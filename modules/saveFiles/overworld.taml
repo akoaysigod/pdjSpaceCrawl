@@ -158,12 +158,13 @@
         Size="8 8"
         Position="37 60"
         Awake="0"
+        BlendColor="1 1 1 0.5"
         UseInputEvents="1"
         Image="@asset=gameModule:gasPlanet"
         Frame="0"
-        current="0"
+        current="1"
         kind="gas"
-        visited="0" />
+        visited="1" />
     <Sprite
         class="Planet"
         Size="7 7"
@@ -230,7 +231,7 @@
         UseInputEvents="1"
         Image="@asset=gameModule:gasPlanet"
         Frame="0"
-        current="1"
+        current="0"
         kind="gas"
         visited="1" />
 </Scene>

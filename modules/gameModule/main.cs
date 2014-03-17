@@ -8,12 +8,7 @@ function GameModule::create( %this ) {
 
 	createSceneWindow();
 	createMainMenu();
-	//createScene();
-	//Window.setScene( GameScene );
 
-	//Window.planetID = 0;
-	//createWorld();
-	
 	setRandomSeed( getRealTime() );  
 	
 	//GameScene.setDebugOn( "collision", "position", "aabb" );
@@ -114,17 +109,38 @@ function gameOver() {
 		image = "gameModule:font";
 		Text = "GAME OVER";
 		FontSize = "10";
-		Position = "0 0";
+		Position = "0 10";
 		SceneLayer = "0";
 		BlendColor = "255, 0, 0";
 		TextAlignment = "center";
 		LifeTime = 10;
 	};
 	UIScene.add( %fin );
+
+	%cont = new ImageFont() {
+		image = "gameModule:font";
+		Text = "Press escape to continue.";
+		FontSize = "3";
+		Position = "0 0";
+		SceneLayer = "0";
+		BlendColor = "255, 0, 0";
+		TextAlignment = "center";
+		LifeTime = 10;
+	};
+	UIScene.add( %cont );
+
+	%input = new ScriptObject( GameOverInput );
+	Window.addInputListener( %input );
+	%controls = new ActionMap( GameOverControls );
+	%controls.bindCmd( keyboard, "escape", "nothing();", "createMainMenu();" );
+	%controls.push();
 }
 
 function saveGame() {
 	Ship.planetID = Window.planetID;
+	if ( Window.planetID == 0 ) {
+		Ship.planetID += 1;
+	}
 	
 	TamlWrite( Mothership, "modules/saveFiles/mothership.taml" );
 	TamlWrite( Ship, "modules/saveFiles/playerShip.taml" );

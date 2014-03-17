@@ -10,12 +10,13 @@ function createSpaceShip() {
 	if ( Window.planetID == 0 ) {
 		%spaceship = TamlRead( "modules/defaultFiles/playerShip.taml");
 		%spaceship.hasGameOver = false;
-		%spaceship.hasShields = true;
+		%spaceship.hasShields = false;
 		%spaceship.shieldsActive = false;
 		%spaceship.hasBoosters = false;
-		%spceship.hasReverseThruster = false;
+		%spaceship.hasReverseThruster = false;
 		%spaceship.hasSpecial = false;
 		%spaceship.planetID = 0;
+		%spaceship.ammo = 10;
 	} else {
 		%spaceship = TamlRead( "modules/saveFiles/playerShip.taml" );
 	}
@@ -25,6 +26,58 @@ function createSpaceShip() {
 	createPlayerUI();
 
 	return %spaceship;
+}
+
+function Missile::onCollision( %this, %collides, %details ) {
+	if ( %collides.kind $= "enemy" ) {
+		%collides.takeDamage( %this.dmg );
+		%this.safeDelete();
+	} else if ( %collides.name $= "border" ) {
+		%this.safeDelete();
+	}
+}
+
+function Ship::launchMissile( %this ) {
+	if ( Ship.ammo <= 0 ) {
+		return;
+	}
+
+	Ship.ammo -= 1;
+	AmmoLabel.updateAmmo();
+
+	%missile = new Sprite() {
+		class = "Missile";
+		image = "gameModule:missile";
+		size = "2 5";
+		position = %this.getPosition();
+		SceneGroup = 7;
+		SceneLayer = 7;
+		LifeTime = 10;
+	};
+	%missile.dmg = 100;
+	%missile.setCollisionCallback( true );
+	%missile.createPolygonBoxCollisionShape( 2, 5 );
+	%missile.setCollisionGroups( 11, 12 );
+	%missile.setUpdateCallback( true );
+
+	%adjustedAngle = %this.getAngle();
+
+	if ( %adjustedAngle < 0 ) {
+			%adjustedAngle *= -1;
+	} else if ( %adjustedAngle > 0 ) {
+			%adjustedAngle = 360 - %adjustedAngle;
+	}
+	
+	
+	%shootDir = Vector2Direction( %adjustedAngle, 50 );
+
+	%missile.setAngle( %this.getAngle() );
+
+	%missile.setLinearVelocity( %shootDir );
+
+	alxPlay( "gameModule:missileLaunch" );
+	
+	GameScene.add( %missile );
 }
 
 function Ship::onCollision( %this, %collides, %collisionDetails ) {

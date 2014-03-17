@@ -1,0 +1,7 @@
+<AudioAsset
+	AssetName="creditSong"
+	AudioFile="creditSong.wav"
+	Streaming=false
+	Looping=false
+	VolumeChannel=1
+/>

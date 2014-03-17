@@ -9,7 +9,6 @@ function createEnemySpawnPoint( %xPos, %yPos ) {
 	if ( %spawn.spawnTimer < 100000 ) {
 		%spawn.spawnTimer = 100000;
 	}
-	
 	%spawn.startTimer( spawnEnemy, %spawn.spawnTimer , 0 );
 }
 

@@ -2,6 +2,8 @@ function createMainMenu() {
 	exec( "./overworld.cs" );
 	exec( "./gameScene.cs" );
 
+	alxStopAll();
+
 	if ( isObject( GameScene ) ) {
 		GameScene.delete();
 	}
@@ -11,11 +13,21 @@ function createMainMenu() {
 	}
 
 	if ( isObject( UIWindow ) ) {
-		UIWindow.delet();
+		UIWindow.delete();
 	}
 
 	if ( isObject( MainMenuScene ) ) {
-		MainMenu.delete();
+		MainMenuScene.delete();
+	}
+
+	if ( isObject( GameOverInput ) ) {
+		GameOverControls.pop();
+		Window.removeInputListener( GameOverInput );
+		GameOverInput.delete();
+	}
+
+	if ( isObject( CreditScene ) ) {
+		CreditScene.delete();
 	}
 
 	$musicChannel = 1;
@@ -34,7 +46,7 @@ function createMainMenu() {
 	%back = new Sprite() {
 		image = "gameModule:mainMenuBackground";
 		size = "100 75";
-		position = "0 0";
+		position = "50 37.5";
 		SceneLayer = 30;
 	};
 	%main.add( %back );
@@ -43,7 +55,7 @@ function createMainMenu() {
 		image = "gameModule:font";
 		FontSize = 2;
 		text = "by Anthony Green and";
-		position = "-30 -33";
+		position = "20 4.5";
 		textAlignmnet = "left";
 	};
 	%main.add( %by );
@@ -51,14 +63,14 @@ function createMainMenu() {
 	%logo = new Sprite() {
 		image = "gameModule:logo";
 		size = "35 3";
-		position = "-29.5 -36";
+		position = "20.5 1.5";
 	};
 	%main.add( %logo );
 
 	%title = new Sprite() {
 		image = "gameModule:title";
 		size = "75 5";
-		position = "0 33";
+		position = "50 70";
 	};
 	%title.setBlendMode( true );
 	%title.setBlendColor( 0, 0, 1.0 );
@@ -68,7 +80,7 @@ function createMainMenu() {
 		class = "Option";
 		image = "gameModule:new";
 		size = "10 5";
-		position = "0 3";
+		position = "50 40.5";
 		SceneLayer = 0;
 		UseInputEvents = true;
 	};
@@ -81,7 +93,7 @@ function createMainMenu() {
 		class = "Option";
 		image = "gameModule:continue";
 		size = "20 5";
-		position = "0 -3";
+		position = "50 34.5";
 		SceneLayer = 0;
 		UseInputEvents = true;
 	};
@@ -96,7 +108,7 @@ function createMainMenu() {
 	}
 
 	Window.dismount();
-	Window.setCameraPosition( 0, 0 );
+	Window.setCameraPosition( 50, 37.5 );
 	Window.setUseObjectInputEvents( true );
 	Window.setScene( %main );
 }
@@ -131,6 +143,7 @@ function Option::onTouchUp( %this, %touchID, %pos ) {
 	if ( %this.optionType $= "continueOption" ) {
 		createOverworld();
 	} else if ( %this.optionType $= "newOption" ) {
+		Window.planetID = 0;
 		createScene();
 	}
 

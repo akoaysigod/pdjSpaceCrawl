@@ -100,34 +100,39 @@ function createPlayerUI() {
 	%money = new ImageFont( MoneyLabel ) {
 		image = "gameModule:font";
 		FontSize = 2;
-		text = "$: ";
-		position = "35 35";
+		text = "$:" SPC Mothership.money;
+		position = "50 36";
 		SceneLayer = 0;
-		textAlignment = "center";
+		textAlignment = "right";
 	};
 	%money.updateMoney( 0 );
 	%playerUI.add( %money );
+
+	if ( Ship.hasSpecial ) {
+		%ammo = new ImageFont( AmmoLabel ) {
+			image = "gameModule:font";
+			FontSize = 2;
+			text = "Ammo:" SPC Ship.ammo;
+			position = "50 34";
+			SceneLayer = 0;
+			textAlignment = "right";
+		};
+
+		%playerUI.add( AmmoLabel );
+	}
 
 	%playerUIWindow.setScene( %playerUI );
 	Canvas.add( %playerUIWindow );
 }
 
+function AmmoLabel::updateAmmo( %this, %change ) {
+	%this.text = "Ammo:" SPC Ship.ammo;
+}
+
 function MoneyLabel::updateMoney( %this, %change ) {
 	Mothership.money += %change;
 
-	if ( isObject( Monies ) ) {
-		Monies.delete();
-	}
-
-	%money = new ImageFont( Monies ) {
-		image = "gameModule:font";
-		FontSize = 2;
-		text = Mothership.money;
-		position = "50 36";
-		SceneLayer = 0;
-		textAlignment = "right";
-	};
-	UIScene.add( %money );
+	%this.text = "$:" SPC Mothership.money;
 }
 
 function MotherHealth::flasher( %this ) {
@@ -139,6 +144,11 @@ function MotherHealth::flasher( %this ) {
 	%this.flasher = %this.schedule( 1000, flasher );
 }
 
+function MotherHealth::removeWarning( %this ) {
+	cancel( %this.flasher );
+	Alert.safeDelete();
+}
+
 function MotherHealth::setupAlert( %this ) {
 	%test = new ImageFont( Alert )  {
 		image = "gameModule:font";
@@ -148,10 +158,11 @@ function MotherHealth::setupAlert( %this ) {
 		SceneLayer = "0";
 		BlendColor = "255, 0, 0";
 		TextAlignment = "center";
-		LifeTime = 10;
+		//LifeTime = 10;
 	};
 	UIScene.add( %test );
 	%this.flasher = %this.schedule( 1000, flasher );
+	%this.startTimer( removeWarning, 10000, 1 );
 }
 
 function MotherHealth::updateHealth( %this, %change ) {
@@ -162,6 +173,7 @@ function MotherHealth::updateHealth( %this, %change ) {
 	}
 
 	if ( Mothership.health <= 0 ) {
+		MotherHealth.delete();
 		gameOver();
 		return;
 	}
@@ -185,6 +197,11 @@ function HealthBar::updateHealth( %this, %change ) {
 		Ship.health = Ship.health;
 	} else {
 		Ship.health = Ship.health - %change;
+	}
+
+	if ( Ship.health <= 0 ) {
+		gameOver();
+		return;
 	}
 	
 	%currentHealth = Ship.health;

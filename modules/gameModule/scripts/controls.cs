@@ -91,7 +91,7 @@ function ShipControls::activateShields( %this, %val ) {
 	}
 }
 
-function ShipControls::fireSpecial( %this ) {
+function ShipControls::fireSpecial( %this, %val ) {
 	if ( $pauseStatus ) {
 		return;
 	}
@@ -103,6 +103,8 @@ function ShipControls::fireSpecial( %this ) {
 	if ( !Ship.hasSpecial ) {
 		return;
 	}
+
+	Ship.launchMissile();
 }
 
 function ShipControls::boost( %this ) {
@@ -317,10 +319,14 @@ function ShipControls::stopThrust( %this ) {
 
 function Bullet::onCollision( %this, %collides, %collisionDetails ) {
 	%collides.setLinearVelocity( "0 0" );
-	
+
 	if ( %collides.name $= "enemy" ) {
 		%collides.takeDamage( %this.damage );
 	} 
+
+	if ( %collides.name $= "border" ) {
+		%this.safeDelete();
+	}
 
 	%this.safeDelete();
 }

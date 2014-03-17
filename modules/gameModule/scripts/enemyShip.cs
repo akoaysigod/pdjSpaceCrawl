@@ -2,13 +2,14 @@ function createEnemyShip() {
 	%enemy = new Sprite( Enemy );
 	%enemy.name = "enemy";
 	%enemy.Image = "gameModule:enemyShip";
+	%enemy.kind = "enemy";
 	%enemy.SceneLayer = 3;
 	%enemy.Position = "10 25";
 	%enemy.Size = "7 4";
 	%enemy.setBodyType( dynamic );
 	%enemy.createPolygonBoxCollisionShape();
-	%enemy.setCollisionLayers( 0, 1, 2 );
-	%enemy.setCollisionGroups( 0, 1, 2 );
+	%enemy.setCollisionLayers( 0, 1, 2, 7 );
+	%enemy.setCollisionGroups( 0, 1, 2, 7 );
 	%enemy.setSceneGroup( 12 );
 	%enemy.setFixedAngle( true );
 	%enemy.setDefaultRestitution( 0.5 );
@@ -18,12 +19,12 @@ function createEnemyShip() {
 	%enemy.mother = false;
 	%enemy.isPatrolling = false;
 
-	%enemy.fireRate = 1000;
-	%enemy.speed = 10;
-	%enemy.health = 1;
+	%enemy.fireRate = 1000 - ( Window.planetID * 50 );
+	%enemy.speed = 10 + Window.planetID;
+	%enemy.health = 1 * ( 2 + Window.planetID );
 	%enemy.movePos = -1;
 
-	%enemy.value = 25;
+	%enemy.value = 10 + ( Window.planetID * 10 );
 
 	return %enemy;
 }
@@ -64,12 +65,12 @@ function Enemy::hoverMode( %this ) {
 function Enemy::patrol( %this ) {
 	%this.isPatrolling = true; 
 
-	%x = 10;
-	%coin = getRandom( 0, 1 );
-	if ( %coin == 1 ) {
-		%x *= -1;
+	%x = getWord( %this.getPosition(), 0 );
+	if ( %x > getWord( Mothership.getPosition(), 0 ) ) {
+		%this.setLinearVelocityX( %this.speed * -1 );
+	} else { 
+		%this.setLinearVelocityX( %this.speed );
 	}
-	%this.setLinearVelocityX( %x );
 }
 
 function Enemy::attackMother( %this ) {
@@ -112,7 +113,7 @@ function Enemy::fireShot( %this ) {
 	%bullet.Position = %this.getPosition();
 	%bullet.setCollisionCallback( true );
 
-	%bullet.damage = 3;
+	%bullet.damage = 3 + Window.planetID;
 
 	if ( %this.following ) {
 		%shootDir = Vector2AngleToPoint( Ship.getPosition(), %this.getPosition() );

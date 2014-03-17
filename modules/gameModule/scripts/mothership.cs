@@ -8,7 +8,7 @@ function createMothership() {
 		%mothership.hasUpgradeThree = false;
 		%mothership.hasUpgradeFour = false;
 		%mothership.health = 100;
-		%mothership.money = 1000;
+		%mothership.money = 0;
 	} else {
 		%mothership = TamlRead( "modules/saveFiles/mothership.taml");
 	}

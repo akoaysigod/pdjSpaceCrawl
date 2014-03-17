@@ -1,5 +1,6 @@
 function createMenuWindow() {
 	exec( "./overworld.cs" );
+	exec( "./credits.cs" );
 
 	pause();
 
@@ -64,7 +65,7 @@ function MenuBox::textTimer( %this ) {
 					%text = "1.Repair Pod";
 					%alpha = 0.5;
 				} else { 
-					%text = "1.Repair Pod" SPC mCeil( 100 - Ship.health );
+					%text = "1.Repair Pod" SPC mCeil( 100 - Ship.health ) * ( 1 + Window.planetID );
 				}
 			case 1:
 				%label = "repairShip";
@@ -72,12 +73,15 @@ function MenuBox::textTimer( %this ) {
 					%text = "2.Repair Ship";
 					%alpha = 0.5;
 				} else {
-					%text = "2.Repair Ship" SPC mCeil( 100 - Mothership.health ) * 2;
+					%text = "2.Repair Ship" SPC mCeil( 100 - Mothership.health ) * ( 2 + Window.planetID );
 				}
 			case 2:
 				%text = "3.Make ammo";
-				if ( !Ship.hasSpecial ) {
+				%label = "ammo";
+				if ( !Ship.hasSpecial || Mothership.money < 10 * ( 1 + Window.planetID ) ) {
 					%alpha = 0.5;
+				} else  {
+					%text ="3.Make ammo" SPC 10 * ( 1 + Window.planetID );
 				}
 			case 3:
 				%text = "4.Lift off";
@@ -125,7 +129,6 @@ function MenuBox::repair( %this ) {
 	if ( Mothership.money > %cost ) {
 		Ship.health = 100;
 		HealthBar.updateHealth( 0 );
-		Mothership.money -= %cost;
 		MoneyLabel.updateMoney( %cost * -1 );
 
 		for ( %i = 0; %i != MenuScene.getCount(); %i++ ) {
@@ -143,7 +146,6 @@ function MenuBox::repairShip( %this ) {
 	if ( Mothership.money > %cost ) {
 		Mothership.health = 100;
 		MotherHealth.updateHealth( 0 );
-		Mothership.money -= %cost;
 		MoneyLabel.updateMoney( %cost * -1 );
 
 		for ( %i = 0; %i != MenuScene.getCount(); %i++ ) {
@@ -153,15 +155,31 @@ function MenuBox::repairShip( %this ) {
 				%t.setBlendAlpha( 0.5 );
 			}
 		}
+		alxPlay( "gameModule:highBeep" );
+	} else {
+		alxPlay( "gameModule:beep" );
 	}
 }
 
 function MenuBox::weapon( %this ) {
+	%cost = 10 * ( 1 + Window.planetID );
+	if ( Mothership.money > %cost ) {
+		Ship.ammo += 1;
+		MoneyLabel.updateMoney( %cost * -1 );
+		AmmoLabel.updateAmmo();
 
-}
-
-function MenuBox::system( %this ) {
-
+		if ( Mothership.money < %cost ) {
+			for ( %i = 0; %i != MenuScene.getCount(); %i++ ) {
+				%t = MenuScene.getObject( %i );
+				if ( %t.label $= "ammo" ){
+					%t.setBlendAlpha( 0.5 );
+				}
+			}
+		}
+		alxPlay( "gameModule:highBeep" );	
+	} else {
+		alxPlay( "gameModule:beep" );
+	}
 }
 
 function MenuBox::liftOff( %this ) {
@@ -169,9 +187,22 @@ function MenuBox::liftOff( %this ) {
 		return;
 	}
 
+	if ( Mothership.hasUpgradeOne ) {
+		if ( Mothership.hasUpgradeTwo ) {
+			if ( Mothership.hasUpgradeThree ) {
+				if ( Mothership.hasUpgradeFour ) {
+					createCredits();
+					return;
+				}
+			}
+		}
+	}
+
 	if ( GameScene.hasMotherPart ) {
 		return;
 	}
+
+	alxPlay( "gameModule:highBeep" );
 
 	Mothership.fuel = 0;
 

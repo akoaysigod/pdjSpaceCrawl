@@ -2,7 +2,7 @@
     Name="mothership"
     SceneGroup="1"
     Size="30 25"
-    Position="114 211.4"
+    Position="200 213.5"
     BodyType="Static"
     CollisionGroups="8194"
     DefaultRestitution="0.5"
@@ -16,8 +16,9 @@
     hasUpgradeOne="0"
     hasUpgradeThree="0"
     hasUpgradeTwo="0"
-    health="100"
+    health="-0.199842453"
     isUpdating="0"
+    money="130"
     pauseAng="0"
     pauseVel="0 0">
     <Sprite.CollisionShapes>

@@ -12,8 +12,10 @@ function createWorld() {
 	$scaleFactor = 2;
 	createBackground();
 
+	%playership = createSpaceShip();
+
 	%test = new LevelGen( GenLevel );
-	%test.initLevel( $width, $height, 40 );
+	%test.initLevel( $width, $height, 35 );
 	%test.automata( 6, 3, 20 );
 	%test.automata( 5, 5, 2 );
 	%test.finish();
@@ -37,14 +39,18 @@ function GenLevel::genSprites( %this ) {
 	%moveY = %blockSize;
 	%simulate = 1;
 
-	for ( %y = 0; %y != $height; %y++ ) {
+	for ( %y = 0; %y != $height - 1; %y++ ) {
 		for ( %x = 0; %x != $width; %x++ ) {
 			%cell = %this.getVal( %x, %y );
 
-			if ( %cell == 1 || %cell == 11 || %cell == 31 ) {
+			if ( %cell == 1 || %cell == 11 || %cell == 31 || ( %cell == 5 && World.planetID == 0 ) ) {
 				%block = new Sprite();
 				%block.name = "block";
-				%block.Image = "gameModule:rockText";
+				if ( getRandom( 0, 1 ) ) {
+					%block.Image = "gameModule:rockTextOne";
+				} else {
+					%block.image = "gameModule:rockTextTwo";
+				}
 				%block.setSceneGroup( 10 );
 				%block.setCollisionGroups( 10 );
 				%block.setCollisionLayers( 10 );
@@ -76,6 +82,27 @@ function GenLevel::genSprites( %this ) {
 	}
 }
 
+function GenLevel::quadChooser( %this, %quad ) {
+	if ( %quad == 0 ) {
+		if ( !( %x < $width / 2 && %y < $height / 2 ) ) {
+			return true;
+		}
+	} else if ( %quad == 1 ) {
+		if ( !( %x > $width / 2 && %y < $height / 2 ) ) {
+			return true;
+		}
+	} else if ( %quad == 2 ) {
+		if ( !( %x < $width / 2 && %y > $height / 2 ) ) { 
+			return true;
+		}
+	} else if ( %quad == 3 ) {
+		if ( !( %x > $width / 2 && %y > $height / 2 ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function GenLevel::placeItems( %this ) {
 	%xPos = 0;
 	%xStart = %xPos;
@@ -100,6 +127,9 @@ function GenLevel::placeItems( %this ) {
 	%placePart = getRandom( 1, 3 );
 	%quad = getRandom( 0, 3 );
 
+	%hasPlacedSpecial = false;
+	%specialQuad = getRandom( 0, 3 );
+
 	for ( %y = 0; %y != $height; %y++ ) {
 		for ( %x = 0; %x != $width; %x++ ) {
 			%cell = %this.getVal( %x, %y );
@@ -117,6 +147,7 @@ function GenLevel::placeItems( %this ) {
 					%placeCount = 95;
 					%placeOne = true;
 					GameScene.add( %item );
+					%xPos += %moveX;
 					continue;
 				} else if ( !%placeTwo && %chance > %placeCount ) {
 					if ( %x - %min > $width / 2 && %y + %min < $height / 2 ) {
@@ -125,6 +156,7 @@ function GenLevel::placeItems( %this ) {
 						%placeCount = 95;
 						%placeTwo = true;
 						GameScene.add( %item );
+						%xPos += %moveX;
 						continue;
 					}
 				} else if ( !%placeThree && %chance > %placeCount ) {
@@ -134,6 +166,7 @@ function GenLevel::placeItems( %this ) {
 						%placeCount = 95;
 						%placeThree = true;
 						GameScene.add( %item );
+						%xPos += %moveX;
 						continue;
 					}
 				} else if ( !%placeFour && %chance > %placeCount ) {
@@ -142,6 +175,7 @@ function GenLevel::placeItems( %this ) {
 						%item.position = %xPos SPC %yPos;
 						%placeFour = true;
 						GameScene.add( %item );
+						%xPos += %moveX;
 						continue;
 					}
 				}
@@ -153,6 +187,7 @@ function GenLevel::placeItems( %this ) {
 							%shields.position = %xPos SPC %yPos;
 							%shieldsPlaced = true;
 							GameScene.add( %shields );
+							%xPos += %moveX;
 							continue;
 						}
 					}
@@ -164,6 +199,7 @@ function GenLevel::placeItems( %this ) {
 							%hasUpgradeOne = true;
 							GameScene.hasMotherPart = true;
 							GameScene.add( %item );
+							%xPos += %moveX;
 							continue;
 						}
 					}
@@ -171,22 +207,9 @@ function GenLevel::placeItems( %this ) {
 
 				if ( Window.planetID > 0 ) {
 					if ( %coin && %chance > 95 ) {
-						if ( %quad == 0 ) {
-							if ( !( %x < $width / 2 && %y < $height / 2 ) ) {
-								continue;
-							}
-						} else if ( %quad == 1 ) {
-							if ( !( %x > $width / 2 && %y < $height / 2 ) ) {
-								continue;
-							}
-						} else if ( %quad == 2 ) {
-							if ( !( %x < $width / 2 && %y > $height / 2 ) ) { 
-								continue;
-							}
-						} else if ( %quad == 3 ) {
-							if ( !( %x > $width / 2 && %y > $height / 2 ) ) {
-								continue;
-							}
+						if ( !%this.quadChooser( %quad ) ) {
+							%xPos += %moveX;
+							continue;
 						}
 
 						%coin = 0;
@@ -199,6 +222,29 @@ function GenLevel::placeItems( %this ) {
 							case 3:
 								%part = createItem( "shipPartFour" );
 						}
+						%part.positon = %xPos SPC %yPos;
+						GameScene.add( %part );
+					}
+				}
+
+				if ( !%hasPlacedSpecial ) {
+					if ( !%this.quadChooser( %specialQuad ) ) {
+						%xPos += %moveX;
+						continue;
+					}
+
+					if ( %chance > 95 ) {
+						%hasPlacedSpecial = true;
+
+						if ( !Ship.hasReverseThruster ) {
+							%special = createItem( "reverseThrusters" );
+						} else if ( !Ship.hasSpecial ) {
+							%special = createItem( "missiles" );
+						} else if ( !Ship.hasBoosters ) {
+							%special = createItem( "boosters" );
+						}
+						%special.position = %xPos SPC %yPos;
+						GameScene.add( %special );
 					}
 				}
 			}
@@ -239,24 +285,51 @@ function GenLevel::genEnemies() {
 	}
 }
 
+function genPlatform() {
+	%i = ( $width / 2 ) * $scaleFactor;
+	%i -= 20;
+	%e = %i + 40;
+	%size = $scaleFactor SPC $scaleFactor;
+
+	for ( %i; %i != %e; %i++ ) {
+		%block = new Sprite();
+		%block.name = "block";
+		if ( getRandom( 0, 1 ) ) {
+			%block.Image = "gameModule:rockTextOne";
+		} else {
+			%block.Image = "gameModule:rockTextTwo";
+		}
+		%block.setSceneGroup( 10 );
+		%block.setCollisionGroups( 10 );
+		%block.setCollisionLayers( 10 );
+		%block.Size = %size;
+		%block.Position = %i SPC ( $height * $scaleFactor );
+		%block.SceneLayer = 10;
+
+		%block.setBodyType( static );
+		%block.createPolygonBoxCollisionShape( %size );
+		%block.setDefaultRestitution( 0.5 );
+
+		GameScene.add( %block );
+	}
+}
+
 function placeMothership() {
-	%start = getRandom( 35, $width - 35 );
+	%start = ( $width / 2 ) * $scaleFactor;
+
+	genPlatform();
 	
 	%mothership = createMothership();
-	%mothership.position = %start SPC ( Mothership.getHeight() / 2 + ( $height * $scaleFactor ) - 1.1 );	GameScene.add( %mothership );
-	
+	%mothership.position = %start SPC ( Mothership.getHeight() / 2 + ( $height * $scaleFactor ) + 1 );	GameScene.add( %mothership );
 	%mothership.createDropBox();
 	
-	%playership = createSpaceShip();
 	%controls = ShipControls.createInstance();
-	%playership.addBehavior( %controls );
-	%playership.Position = %mothership.getPosition();//%start SPC ( $height * $scaleFactor ) + 25;
-	GameScene.add( %playership );
+	Ship.addBehavior( %controls );
+	Ship.Position = %mothership.getPosition();//%start SPC ( $height * $scaleFactor ) + 25;
+	GameScene.add( Ship );
 	
-	Window.mount( %playership, 0, 0, 10, true, false );
+	Window.mount( Ship, 0, 0, 10, true, false );
 	Window.setViewLimitOn( 0, 0, $width * $scaleFactor, ( $height * $scaleFactor ) + 75);
-
-	GameScene.add( %item );
 }
 
 

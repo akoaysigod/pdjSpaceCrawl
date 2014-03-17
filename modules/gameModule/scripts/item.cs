@@ -39,6 +39,12 @@ function createItem( %itemType ) {
 			%item.size = "5 6";
 			%item.weight = "0 -2";
 			%item.text = "The Mothership engine part greatly increases fuel efficiency. Now only three fuel are required to leave a planet.";
+
+		case "reverseThrusters":
+			%item.name = "reverseThrusters";
+			%item.size = "5 5";
+			%item.weight = "0 -2.5";
+			%item.text = "The reverse thrusters allow you to slow down in low gravity situations. Press the S key to use.";
 	}
 
 	%item.text = %item.text SPC  "Press ENTER to continue. ";
